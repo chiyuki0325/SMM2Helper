@@ -1,0 +1,10 @@
+@nsobid-60B80D35E3DB760620135E023F1CA0B3
+#Super Mario Maker 2 1.0.1 USA
+
+@flag print_values
+
+@flag offset_shift 0x100
+
+// example patch
+@enabled
+69696969 42042042

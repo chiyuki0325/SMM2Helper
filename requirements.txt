@@ -1,0 +1,3 @@
+nintendoclients==0.0.3
+pywebview
+requests
