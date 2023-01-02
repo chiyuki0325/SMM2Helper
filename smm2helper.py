@@ -84,8 +84,9 @@ class Api:
 
 
 def webview_init(window: webview.Window):
+    window.load_css(open(Path('./web/index.css')).read())
     load_local_courses(window)
-    load_online_endless(window)
+    # load_online_endless(window)
     widgets.clear_tabs_state(window)
 
 
