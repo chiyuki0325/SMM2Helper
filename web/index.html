@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="button.css">
     <link rel="stylesheet" href="dialog.css">
     <link rel="stylesheet" href="message.css">
+    <link rel="stylesheet" href="details.css">
 </head>
 <body>
 <div class="box">
@@ -40,9 +41,68 @@ Popular: Search courses from popular courses">
             </div>
         </div>
         <div class="card main-card" id="right-card">
-            <ol id="online-courses"></ol>
-            <div id="online-course"></div>
-            <div id="online-maker"></div>
+            <ol id="online-courses" class="right-region" style="opacity: 1"></ol>
+            <div id="online-course" class="right-region details-root" style="opacity: 0; height: 0">
+                <span class="details-head">
+                    <img src="Img" class="details-img-small" alt="Course One-Screen Thumbnail" id="details-img">
+                    <span class="details-info">
+                        <div class="details-title" id="details-course-title">Title</div>
+                        <div class="details-course-maker-root">
+                            <div class="details-course-maker details-with-icon" id="details-course-maker"
+                                 onclick="showOnlineMakerDetails(this)" title="MakerID">Maker</div>
+                            <div class="details-text-small" id="details-course-maker-time">UploadTime</div>
+                        </div>
+                        <div class="details-text-small details-course-upload-time details-with-icon"
+                             id="details-course-upload-time">UploadedDate</div>
+                        <div class="details-course-description details-with-icon"
+                             id="details-course-description" title="FullDescription">Description</div>
+                    </span>
+                </span>
+                <span class="details-others">
+                    <span class="details-others-left">
+                        <div class="details-course-id details-with-icon click-to-copy" id="details-course-id"
+                             onclick="copyText(this.innerText)" title="Click to copy">CourseID</div>
+                        <div class="details-course-scene details-with-icon">
+                            <div id="details-course-game-style">GameStyle</div>
+                            <div id="details-course-theme-name">Theme</div>
+                        </div>
+                        <div class="details-course-difficulty details-with-icon" id="details-course-difficulty">
+                            Difficulty</div>
+                        <div class="details-course-rate details-with-icon">
+                            <div id="details-course-clear-rate">ClearRate</div>
+                            <div id="details-course-clears" class="details-text-small">Clears</div>
+                            <div class="details-text-small">/</div>
+                            <div id="details-course-attempts" class="details-text-small">Attempts</div>
+                        </div>
+                    </span>
+                    <span class="details-others-right">
+                        <div class="details-course-likes-root">
+                            <div class="details-with-icon details-course-likes" id="details-course-likes">Likes</div>
+                            &nbsp;&nbsp;
+                            <div class="details-with-icon details-course-boos" id="details-course-boos">Boos</div>
+                        </div>
+                        <div class="details-course-maker-root">
+                            <div class="details-course-record-holder details-with-icon"
+                                 id="details-course-record-holder"
+                                 onclick="showOnlineRecordHolderDetails(this)" title="RecordHolderID">
+                                RecordHolder</div>
+                            <div class="details-text-small" id="details-course-record-time">WorldRecord</div>
+                        </div>
+                        <div class="details-course-tag-1 details-with-icon" id="details-course-tag-1">Tag1</div>
+                        <div class="details-course-tag-2 details-with-icon" id="details-course-tag-2">Tag2</div>
+                    </span>
+                </span>
+                <span class="details-img-full-root">
+                    <img src="EntireImg" class="details-img-full" alt="Course Full Thumbnail" id="details-img-full">
+                </span>
+                <div class="details-options">
+                    <button type="button" class="fluent-button fluent-button-secondary"
+                            onclick="backToOnlineCourseList()">
+                        Back
+                    </button>
+                </div>
+            </div>
+            <div id="online-maker" style="visibility: hidden"></div>
         </div>
     </div>
 </div>
@@ -102,7 +162,11 @@ Popular: Search courses from popular courses">
                 element.setAttribute('class', 'entry');
             }
         )
-        obj.setAttribute('class', 'entry entry-active');
+        pywebview.api.handle_entry_click(obj.parentNode.id, obj.getAttribute('idx')).then(
+            () => {
+                obj.setAttribute('class', 'entry entry-active')
+            }
+        );
     }
 
     function activeTab(obj) {
@@ -146,6 +210,10 @@ Popular: Search courses from popular courses">
     }
 
     function switchRandom(obj) {
+        const tabs = document.getElementById('tabs');
+        if (tabs.getAttribute('state') === 'loading') {
+            return;
+        }
         pywebview.api.handle_switch_random().then(
             (is_random) => {
                 obj.innerText = is_random ? 'Random' : 'Popular';
@@ -154,11 +222,15 @@ Popular: Search courses from popular courses">
         );
     }
 
+    function fillInnerText(id, content) {
+        document.getElementById(id).innerText = content;
+    }
+
     function showDialog(title, content, yes_visible, yes_text, no_visible, no_text, dialog_callback_id) {
         document.getElementById('dialog-bg').style.visibility = 'visible';
-        document.getElementById('dialog-box').style.opacity = 1;
-        document.getElementById('dialog-title').innerText = title;
-        document.getElementById('dialog-content').innerText = content;
+        document.getElementById('dialog-box').style.opacity = '1';
+        fillInnerText('dialog-title', title);
+        fillInnerText('dialog-content', content);
         const button_yes = document.getElementById('dialog-button-yes');
         button_yes.setAttribute('callback-id', dialog_callback_id);
         const button_no = document.getElementById('dialog-button-no');
@@ -175,6 +247,64 @@ Popular: Search courses from popular courses">
         } else {
             button_no.style.visibility = 'hidden';
         }
+    }
+
+    function showOnlineCourseDetails(idx, name, description, uploaded_date, course_id, data_id, game_style, theme,
+                                     difficulty, tag_1, tag_2, world_record, upload_time, clears, attempts, clear_rate,
+                                     likes, boos, maker_name, maker_id, record_holder, record_holder_id, small_img_url,
+                                     full_img_url) {
+        const onlineCourses = document.getElementById('online-courses');
+        onlineCourses.style.opacity = '0';
+        onlineCourses.style.height = '0';
+        setTimeout(() => {
+            onlineCourses.style.visibility = 'hidden';
+        }, 200);
+        const onlineCourse = document.getElementById('online-course');
+        onlineCourse.setAttribute('idx', idx);
+        onlineCourse.setAttribute('data-id', data_id);
+        fillInnerText('details-course-title', name);
+        fillInnerText('details-course-description', description);
+        document.getElementById('details-course-description').setAttribute('title', description);
+        fillInnerText('details-course-maker', maker_name);
+        document.getElementById('details-course-maker').setAttribute('title', maker_id);
+        fillInnerText('details-course-maker-time', upload_time);
+        fillInnerText('details-course-upload-time', uploaded_date);
+        fillInnerText('details-course-id', course_id);
+        fillInnerText('details-course-game-style', game_style);
+        fillInnerText('details-course-theme-name', theme);
+        fillInnerText('details-course-difficulty', difficulty);
+        fillInnerText('details-course-clear-rate', clear_rate);
+        fillInnerText('details-course-clears', clears);
+        fillInnerText('details-course-attempts', attempts);
+        fillInnerText('details-course-likes', likes);
+        fillInnerText('details-course-boos', boos);
+        fillInnerText('details-course-record-holder', record_holder);
+        document.getElementById('details-course-record-holder').setAttribute('title', record_holder_id);
+        fillInnerText('details-course-record-time', world_record);
+        fillInnerText('details-course-tag-1', tag_1);
+        fillInnerText('details-course-tag-2', tag_2);
+        document.getElementById('details-img').setAttribute('src', small_img_url);
+        document.getElementById('details-img-full').setAttribute('src', full_img_url);
+        onlineCourse.style.visibility = 'visible';
+        onlineCourse.style.height = '';
+        onlineCourse.style.opacity = '1';
+    }
+
+    function copyText(text) {
+        pywebview.api.handle_copy_text(text).then(() => console.log('Copy ' + text), (err) => showErrorMessage(err))
+    }
+
+    function backToOnlineCourseList() {
+        const onlineCourses = document.getElementById('online-courses');
+        const onlineCourse = document.getElementById('online-course');
+        onlineCourse.style.opacity = '0';
+        onlineCourse.style.height = '0';
+        setTimeout(() => {
+            onlineCourse.style.visibility = 'hidden';
+        }, 200);
+        onlineCourses.style.visibility = 'visible';
+        onlineCourses.style.height = '';
+        onlineCourses.style.opacity = '1';
     }
 </script>
 </body>

@@ -59,12 +59,17 @@ class Course:
     clear_rate: str
     likes: int
     boos: int
-    plays: int
     maker: Maker
     record_holder: Maker
 
 
+def prettify_course_id(course_id: str) -> str:
+    return f'{course_id[0:3]}-{course_id[3:6]}-{course_id[6:9]}'
+
+
 def deserialize_course(course: dict) -> Course:
+    if 'world_record_pretty' not in course:
+        course['world_record_pretty'] = '0'
     return Course(
         name=course['name'],
         description=course['description'],
@@ -83,7 +88,6 @@ def deserialize_course(course: dict) -> Course:
         clear_rate=course['clear_rate_pretty'],
         likes=course['likes'],
         boos=course['boos'],
-        plays=course['plays'],
         maker=deserialize_maker(course['uploader']),
         record_holder=deserialize_maker(course['record_holder'])
     )

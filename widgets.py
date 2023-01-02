@@ -1,9 +1,20 @@
 from webview import Window
 from urllib.parse import quote
+from tgrcode_api import Course as OnlineCourse
+from tgrcode_api import Maker as OnlineMaker
+from tgrcode_api import prettify_course_id
+from config import TGRCODE_API, SHOW_THUMBNAILS
 
 
 def quote_vars(*args):
     return map(quote, args)
+
+
+def readable_number(number: int) -> str:
+    if number < 1000:
+        return str(number)
+    else:
+        return f'{number // 1000}k'
 
 
 # ----
@@ -46,3 +57,31 @@ def show_dialog(window: Window,
                        f"'{str(no_visible).lower()}',"
                        f"decodeURIComponent('{no_text}'),"
                        f"{dialog_callback_id};")
+
+
+def show_online_course_details(window: Window, idx: int, course: OnlineCourse):
+    api_root: str = TGRCODE_API if SHOW_THUMBNAILS else ''
+    window.evaluate_js(f"showOnlineCourseDetails({idx},"
+                       f"decodeURIComponent('{quote(course.name)}'),"
+                       f"decodeURIComponent('{quote(course.description)}'),"
+                       f"decodeURIComponent('{quote(course.uploaded_date)}'),"
+                       f"'{prettify_course_id(course.course_id)}',"
+                       f"{course.data_id},"
+                       f"'{course.game_style}',"
+                       f"'{course.theme}',"
+                       f"'{course.difficulty}',"
+                       f"'{course.tag_1}',"
+                       f"'{course.tag_2}',"
+                       f"decodeURIComponent('{quote(course.world_record)}'),"
+                       f"'{course.upload_time}',"
+                       f"'{readable_number(course.clears)}',"
+                       f"'{readable_number(course.attempts)}',"
+                       f"'{course.clear_rate}',"
+                       f"'{readable_number(course.likes)}',"
+                       f"'{readable_number(course.boos)}',"
+                       f"decodeURIComponent('{quote(course.maker.name)}'),"
+                       f"'{prettify_course_id(course.maker.maker_id)}',"
+                       f"decodeURIComponent('{quote(course.record_holder.name)}'),"
+                       f"'{prettify_course_id(course.record_holder.maker_id)}',"
+                       f"'{api_root}/level_thumbnail/{course.course_id}',"
+                       f"'{api_root}/level_entire_thumbnail/{course.course_id}');")

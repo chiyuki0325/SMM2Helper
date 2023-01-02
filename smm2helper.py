@@ -7,6 +7,7 @@ from SMM2.course import Course as DecryptedCourse
 from SMM2.data import GAME_STYLE_NAMES
 
 from pathlib import Path
+import pyclip
 
 import webview
 import widgets
@@ -18,10 +19,6 @@ import config
 save_dir: Path = Path(config.SAVE_DIR)
 online_course_list_cache: list[OnlineCourse] = []
 is_random: bool = True  # True: random / False: popular
-
-
-def prettify_course_id(course_id: str) -> str:
-    return f'{course_id[0:3]}-{course_id[3:6]}-{course_id[6:9]}'
 
 
 def display_an_empty_slot(window: webview.Window, idx: int):
@@ -86,7 +83,7 @@ def load_online_random(window: webview.Window,
             widgets.insert_online_course(window, course.name,
                                          f'{course.game_style} | '
                                          f'{course.maker.name} | '
-                                         f'{prettify_course_id(course.course_id)}',
+                                         f'{tgrcode_api.prettify_course_id(course.course_id)}',
                                          idx)
     except tgrcode_api.TGRCodeAPIException as ex:
         widgets.show_error_message(window, str(ex))
@@ -108,7 +105,7 @@ def load_online_popular(window: webview.Window,
             widgets.insert_online_course(window, course.name,
                                          f'{course.game_style} | '
                                          f'{course.maker.name} | '
-                                         f'{prettify_course_id(course.course_id)}',
+                                         f'{tgrcode_api.prettify_course_id(course.course_id)}',
                                          idx)
     except tgrcode_api.TGRCodeAPIException as ex:
         widgets.show_error_message(window, str(ex))
@@ -130,12 +127,22 @@ class Api:
         is_random = not is_random
         return is_random
 
+    def handle_entry_click(self, parent_id: str, entry_idx):
+        global window
+        entry_idx = int(entry_idx)
+        if parent_id == 'online-courses':
+            widgets.show_online_course_details(window=window, idx=entry_idx, course=online_course_list_cache[entry_idx])
+
+    def handle_copy_text(self, text_to_copy: str):
+        pyclip.copy(text_to_copy)
+
 
 def webview_init(window: webview.Window):
     window.load_css(open(Path('./web/index.css')).read())
     window.load_css(open(Path('./web/button.css')).read())
     window.load_css(open(Path('./web/dialog.css')).read())
     window.load_css(open(Path('./web/message.css')).read())
+    window.load_css(open(Path('./web/details.css')).read())
     load_local_courses(window)
     if config.LOAD_ONLINE_ON_START:
         load_online_random(window)

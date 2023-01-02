@@ -1,0 +1,175 @@
+.details-root {
+    padding: 5px;
+}
+
+.details-head {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 12px;
+}
+
+.details-img-small {
+    width: 200px;
+    border-radius: 4px;
+}
+
+.details-title {
+    font-weight: 700;
+    font-size: 1.3rem;
+}
+
+.details-info {
+    display: flex;
+    flex-direction: column;
+    gap: inherit;
+    margin-left: 4px;
+    width: calc(calc(60vw - 200px) - 4.2rem);
+}
+
+.details-course-maker-root {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 4px;
+}
+
+.details-course-maker {
+    cursor: pointer;
+}
+
+.details-with-icon::before {
+    top: 4px;
+    position: relative;
+}
+
+.details-course-maker::before {
+    content: url("https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Person/SVG/ic_fluent_person_20_regular.svg");
+    padding-right: 4px;
+}
+
+.details-course-description {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.details-course-description::before {
+    content: url("https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Edit/SVG/ic_fluent_edit_20_regular.svg");
+    padding-right: 4px;
+}
+
+.details-course-upload-time::before {
+    content: url("https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Clock/SVG/ic_fluent_clock_20_regular.svg");
+    padding-right: 4px;
+}
+
+.details-text-small {
+    font-size: 14px;
+    color: #999999;
+}
+
+.details-others {
+    width: 100%;
+    display: flex;
+    margin-bottom: 12px;
+}
+
+.details-others-left {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.details-others-right {
+    width: 50%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.details-course-scene::before {
+    content: url("https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Brightness High/SVG/ic_fluent_brightness_high_20_regular.svg");
+}
+
+.details-course-scene {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 4px;
+}
+
+.details-course-difficulty::before {
+    content: url("https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Text Bullet List Tree/SVG/ic_fluent_text_bullet_list_tree_20_regular.svg");
+    padding-right: 4px;
+}
+
+.details-course-rate {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 4px;
+}
+
+.details-course-rate::before {
+    content: url("https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Ribbon/SVG/ic_fluent_ribbon_20_regular.svg");
+}
+
+.details-course-record-holder::before {
+    content: url("https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Ribbon Star/SVG/ic_fluent_ribbon_star_20_regular.svg");
+    padding-right: 4px;
+}
+
+.details-course-likes-root {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+}
+
+.details-course-likes::before {
+    content: url("https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Heart/SVG/ic_fluent_heart_20_regular.svg");
+    padding-right: 4px;
+}
+
+.details-course-boos::before {
+    content: url("https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Heart Broken/SVG/ic_fluent_heart_broken_20_regular.svg");
+    padding-right: 4px;
+}
+
+.details-course-id::before {
+    content: url("https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Number Symbol/SVG/ic_fluent_number_symbol_20_regular.svg");
+    padding-right: 4px;
+}
+
+.details-course-tag-1::before {
+    content: url("https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Tag/SVG/ic_fluent_tag_20_regular.svg");
+    padding-right: 4px;
+}
+.details-course-tag-2::before {
+    content: url("https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Tag/SVG/ic_fluent_tag_20_regular.svg");
+    padding-right: 4px;
+}
+
+.details-img-full {
+    height: 100px
+}
+
+.details-img-full-root {
+    width: calc(60vw - 3.5rem);
+    overflow-x: auto;
+    display: block;
+    border-radius: 4px;
+}
+
+
+
+.details-options {
+    float: right;
+    position: absolute;
+    bottom: 1.4rem;
+    right: 1.4rem;
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+}

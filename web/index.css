@@ -138,3 +138,13 @@ ol {
 .course-title {
     height: 23px;
 }
+
+.click-to-copy {
+    cursor: pointer;
+}
+
+.right-region {
+    transition-property: opacity;
+    transition-duration: 100ms;
+    transition-timing-function: cubic-bezier(0.33, 0, 0.67, 1);
+}
