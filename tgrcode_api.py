@@ -5,6 +5,10 @@ from enum import Enum
 from config import TGRCODE_API
 
 
+class TGRCodeAPIException(BaseException):
+    pass
+
+
 @dataclass
 class Maker:
     region: str
@@ -125,7 +129,7 @@ def search_endless_mode(count: int = 10, difficulty_id: str = 'e') -> list[Cours
     try:
         courses = response.json()['courses']
     except requests.exceptions.JSONDecodeError:
-        raise Exception(response.text)
+        raise TGRCodeAPIException(response.text)
     ret: list[Course] = []
     for course in courses:
         ret.append(deserialize_course(course))

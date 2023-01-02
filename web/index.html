@@ -29,6 +29,7 @@
         .right {
             display: flex;
             flex-direction: column;
+            width: calc(60vw - 1.4rem);
             flex: 1;
             padding: 0.7rem;
             padding-left: 0.35rem;
@@ -129,6 +130,35 @@
         .course-title {
             height: 23px;
         }
+
+        .message {
+            height: 16px;
+            border: 1px solid rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+            padding: 6px;
+            margin: 10px;
+            transition-property: opacity, transform;
+            transition-duration: 300ms;
+            transition-timing-function: cubic-bezier(0.33, 0, 0.67, 1);
+            opacity: 0;
+            font-size: 14px;
+            transform: scaleY(0);
+        }
+
+        .error-message {
+            color: darkred;
+            background-color: #ff9999;
+        }
+
+        .float {
+            float: left;
+            width: 100vw;
+            top: 0;
+            position: absolute;
+            display: flex;
+            align-content: center;
+            justify-content: center;
+        }
     </style>
 </head>
 <body>
@@ -143,7 +173,7 @@
     </div>
     <div class="right">
         <div class="main-head" style="align-items: center">
-            <div class="tabs">
+            <div class="tabs" id="tabs" state="loading">
                 <div id="e" class="tab tab-active" onclick="activeTab(this)">Easy</div>
                 <div id="n" class="tab" onclick="activeTab(this)">Normal</div>
                 <div id="ex" class="tab" onclick="activeTab(this)">Expert</div>
@@ -159,9 +189,14 @@
         </div>
     </div>
 </div>
+<div id="vars"></div>
+<div class="float">
+    <div id="error-message" class="message error-message">
+    </div>
+</div>
 <script language="javascript">
 
-    function showResponse(response) {
+    function finishResponse(response) {
         console.log('jsbridge response:' + response.message)
     }
 
@@ -198,22 +233,45 @@
             document.getElementsByClassName('entry')
         ).forEach(
             function (element) {
-                element.setAttribute('class', 'entry')
+                element.setAttribute('class', 'entry');
             }
         )
-        obj.setAttribute('class', 'entry entry-active')
+        obj.setAttribute('class', 'entry entry-active');
     }
 
-    function activeTab(obj) {
+    async function activeTab(obj) {
+        const tabs = document.getElementById('tabs');
+        if (tabs.getAttribute('state') === 'loading') {
+            return;
+        }
+        tabs.setAttribute('state', 'loading');
         Array.from(
             document.getElementsByClassName('tab')
         ).forEach(
             function (element) {
-                element.setAttribute('class', 'tab')
+                element.setAttribute('class', 'tab');
             }
         )
-        obj.setAttribute('class', 'tab tab-active')
-        pywebview.api.handle_tab_active(obj.id).then(showResponse)
+        obj.setAttribute('class', 'tab tab-active');
+        await pywebview.api.handle_tab_active(obj.id).catch((err) => {
+            showErrorMessage(err)
+        });
+        tabs.removeAttribute('state');
+    }
+
+    function showErrorMessage(message) {
+        console.error(message);
+        const errorMessage = document.getElementById('error-message')
+        errorMessage.innerText = message;
+        errorMessage.style.opacity = '1';
+        errorMessage.style.transform = 'scaleY(1)';
+        setTimeout(hideErrorMessage, 3000)
+    }
+
+    function hideErrorMessage() {
+        const errorMessage = document.getElementById('error-message')
+        errorMessage.style.opacity = '0';
+        errorMessage.style.transform = 'scaleY(0)';
     }
 
     function clearOnlineCourse() {

@@ -1,6 +1,7 @@
 import codecs
 from SMM2 import streams
 
+
 class Course:
     def __init__(self, data=None):
         if not data:
@@ -16,12 +17,13 @@ class Course:
             self.stream = streams.StreamIn(self.data)
             self.stream.byteorder = codecs.BOM_UTF16_LE
             self.HEADER = CourseHeader(self.stream.read(0x200, codecs.BOM_UTF16_BE))
-            self.OVERWORLD = CourseArea(self.stream.read(0x2DEE0, codecs.BOM_UTF16_BE))
-            self.SUBWORLD = CourseArea(self.stream.read(0x2DEE0, codecs.BOM_UTF16_BE))
+            # self.OVERWORLD = CourseArea(self.stream.read(0x2DEE0, codecs.BOM_UTF16_BE))
+            # self.SUBWORLD = CourseArea(self.stream.read(0x2DEE0, codecs.BOM_UTF16_BE))
 
     def save(self):
         self.stream = streams.StreamOut()
         self.stream.byteorder = codecs.BOM_UTF16_LE
+
 
 class CourseHeader:
     def __init__(self, data=None):
@@ -70,11 +72,13 @@ class CourseHeader:
             self.GAME_STYLE = self.stream.read(0x2)
             self.stream.skip(0x1)
             self.NAME = self.stream.read(0x42, codecs.BOM_UTF16_BE).decode("utf-16-le", errors="ignore").rstrip('\x00')
-            self.DESCRIPTION = self.stream.read(0xCA, codecs.BOM_UTF16_BE).decode("utf-16-le", errors="ignore").rstrip('\x00')
+            self.DESCRIPTION = self.stream.read(0xCA, codecs.BOM_UTF16_BE).decode("utf-16-le", errors="ignore").rstrip(
+                '\x00')
 
     def save(self):
         self.stream = streams.StreamOut()
         self.stream.byteorder = codecs.BOM_UTF16_LE
+
 
 class CourseArea:
     def __init__(self, data=None):
@@ -99,10 +103,10 @@ class CourseArea:
             self.LIQUID_SPEED = self.stream.read8()
             self.END_LIQUID_HEIGHT = self.stream.read8()
             self.BOUNDARIES = {
-                "RIGHT":self.stream.read32(),
-                "TOP":self.stream.read32(),
-                "LEFT":self.stream.read32(),
-                "BOTTOM":self.stream.read32()
+                "RIGHT": self.stream.read32(),
+                "TOP": self.stream.read32(),
+                "LEFT": self.stream.read32(),
+                "BOTTOM": self.stream.read32()
             }
             self.AREA_FLAGS = self.stream.read32()
             self.ACTOR_COUNT = self.stream.read32()
@@ -134,6 +138,7 @@ class CourseArea:
         self.stream = streams.StreamOut()
         self.stream.byteorder = codecs.BOM_UTF16_LE
 
+
 class Actor:
     def __init__(self, data=None):
         if not data:
@@ -149,13 +154,13 @@ class Actor:
             self.stream = streams.StreamIn(self.data)
             self.stream.byteorder = codecs.BOM_UTF16_LE
             self.POSITION = {
-                "X":self.stream.read32()/10,
-                "Y":self.stream.read32()/10
+                "X": self.stream.read32() / 10,
+                "Y": self.stream.read32() / 10
             }
             self.stream.skip(0x2)
             self.SIZE = {
-                "X":self.stream.read8(),
-                "Y":self.stream.read8()
+                "X": self.stream.read8(),
+                "Y": self.stream.read8()
             }
             self.FLAGS = [
                 self.stream.read32(),
@@ -163,11 +168,11 @@ class Actor:
             ]
             self.EXTENDED_DATA = self.stream.read32()
             self.TYPES = {
-                "PARENT":[
+                "PARENT": [
                     self.stream.read8(),
                     self.stream.read8()
                 ],
-                "CHILD":[
+                "CHILD": [
                     self.stream.read8(),
                     self.stream.read8()
                 ]
