@@ -159,6 +159,7 @@
             display: flex;
             align-content: center;
             justify-content: center;
+            visibility: hidden;
         }
     </style>
 </head>
@@ -175,7 +176,7 @@
     <div class="right">
         <div class="main-head" style="align-items: center">
             <div class="tabs" id="tabs" state="loading">
-                <div id="e" class="tab tab-active" onclick="activeTab(this)">Easy</div>
+                <div id="e" class="tab tab-active" onclick="activeTab(this);">Easy</div>
                 <div id="n" class="tab" onclick="activeTab(this)">Normal</div>
                 <div id="ex" class="tab" onclick="activeTab(this)">Expert</div>
                 <div id="sex" class="tab" onclick="activeTab(this)">Super Expert</div>
@@ -191,8 +192,8 @@
     </div>
 </div>
 <div id="vars"></div>
-<div class="float">
-    <div id="error-message" class="message error-message">
+<div class="float" id="float">
+    <div id="error-message" class="message error-message" onclick="hideErrorMessage()">
     </div>
 </div>
 <script language="javascript">
@@ -240,7 +241,7 @@
         obj.setAttribute('class', 'entry entry-active');
     }
 
-    async function activeTab(obj) {
+    function activeTab(obj) {
         const tabs = document.getElementById('tabs');
         if (tabs.getAttribute('state') === 'loading') {
             return;
@@ -254,15 +255,14 @@
             }
         )
         obj.setAttribute('class', 'tab tab-active');
-        await pywebview.api.handle_tab_active(obj.id).catch((err) => {
-            showErrorMessage(err)
-        });
-        tabs.removeAttribute('state');
+        pywebview.api.handle_tab_active(obj.id).then(() => tabs.removeAttribute('state'), (err) => showErrorMessage(err))
     }
 
     function showErrorMessage(message) {
         console.error(message);
+        const float = document.getElementById('float')
         const errorMessage = document.getElementById('error-message')
+        float.style.visibility = 'visible';
         errorMessage.innerText = message;
         errorMessage.style.opacity = '1';
         errorMessage.style.transform = 'scaleY(1)';
@@ -270,7 +270,9 @@
     }
 
     function hideErrorMessage() {
+        const float = document.getElementById('float')
         const errorMessage = document.getElementById('error-message')
+        float.style.visibility = 'hidden';
         errorMessage.style.opacity = '0';
         errorMessage.style.transform = 'scaleY(0)';
     }

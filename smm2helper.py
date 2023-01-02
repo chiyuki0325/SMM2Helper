@@ -63,7 +63,7 @@ def load_online_endless(window: webview.Window,
                                                               f'{course.maker.name} | '
                                                               f'{prettify_course_id(course.course_id)}')
     except tgrcode_api.TGRCodeAPIException as ex:
-        window.evaluate_js(f"showErrorMessage('{str(ex)}')")
+        widgets.show_error_message(window, str(ex))
 
 
 class Api:
@@ -79,7 +79,7 @@ class Api:
 def webview_init(window: webview.Window):
     load_local_courses(window)
     load_online_endless(window)
-    window.evaluate_js("document.getElementById('tabs').removeAttribute('state');")
+    widgets.clear_tabs_state(window)
 
 
 if __name__ == '__main__':
