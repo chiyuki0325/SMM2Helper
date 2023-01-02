@@ -1,5 +1,3 @@
-import enum
-
 TILE_WIDTHS = {"M1": 16, "M3": 16, "MW": 16, "WU": 64, "3W": 64}
 
 ACTOR_COUNT = 2600
@@ -12,18 +10,18 @@ ACTOR_CATEGORIES = [
 ]
 
 PLAYER_NAMES = {
-    "Mario":"Mario",
-    "Luigi":"Luigi",
-    "Toad":"Kinopio",
-    "Toadette":"Kinopico"
+    "Mario": "Mario",
+    "Luigi": "Luigi",
+    "Toad": "Kinopio",
+    "Toadette": "Kinopico"
 }
 
 GAME_STYLE_NAMES = {
-    "M1":"Super Mario Bros.",
-    "M3":"Super Mario Bros. 3",
-    "MW":"Super Mario World",
-    "WU":"New Super Mario Bros. U",
-    "3W":"Super Mario 3D World"
+    "M1": "Super Mario Bros.",
+    "M3": "Super Mario Bros. 3",
+    "MW": "Super Mario World",
+    "WU": "New Super Mario Bros. U",
+    "3W": "Super Mario 3D World"
 }
 
 COURSE_THEME_NAMES = [
@@ -50,7 +48,7 @@ WORLD_THEME_NAMES = [
     "Space"
 ]
 
-SPEED_NAMES  = [
+SPEED_NAMES = [
     "None",
     "Slow",
     "Normal",
@@ -64,7 +62,7 @@ MOTION_NAMES = [
     "TwoWay"
 ]
 
-CC_CATEGORY_NAMES  = [
+CC_CATEGORY_NAMES = [
     "None",
     "Parts",
     "Status",
@@ -153,9 +151,9 @@ CC_HASHES = [
 ]
 
 FILE_SIZES = {
-    "COURSE_DATA":0x5C000,
-    "THUMBNAIL_DATA":0x1C000,
-    "REPLAY_DATA":0x68000
+    "COURSE_DATA": 0x5C000,
+    "THUMBNAIL_DATA": 0x1C000,
+    "REPLAY_DATA": 0x68000
 }
 
 COURSE_HEADER_SiZE = 0x200
@@ -164,16 +162,16 @@ COURSE_AREA_SIZE = 0x2DEE0
 SAVE_COURSE_OFFSET = 0xB920
 
 DIRECTION = {
-    1:  "LEFT",
-    2:  "RIGHT",
-    3:  "DOWN",
-    4:  "UP",
-    5:  "LEFT_TO_DOWN",
-    6:  "DOWN_TO_LEFT",
-    7:  "LEFT_TO_UP",
-    8:  "UP_TO_LEFT",
-    9:  "RIGHT_TO_DOWN",
-    10:  "DOWN_TO_RIGHT",
+    1: "LEFT",
+    2: "RIGHT",
+    3: "DOWN",
+    4: "UP",
+    5: "LEFT_TO_DOWN",
+    6: "DOWN_TO_LEFT",
+    7: "LEFT_TO_UP",
+    8: "UP_TO_LEFT",
+    9: "RIGHT_TO_DOWN",
+    10: "DOWN_TO_RIGHT",
     11: "RIGHT_TO_UP",
     12: "UP_TO_RIGHT",
     13: "RIGHT_TO_END",

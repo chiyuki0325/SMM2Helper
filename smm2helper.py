@@ -64,7 +64,7 @@ def load_online_endless(window: webview.Window,
     try:
         courses: list[OnlineCourse] = tgrcode_api.search_endless_mode(count, difficulty_id)
         for course in courses:
-            widgets.insert_online_course(window, course.name, course.description)
+            widgets.insert_online_course(window, course.name, f'{course.description}')
     except tgrcode_api.TGRCodeAPIException as ex:
         window.evaluate_js(f"showErrorMessage('{str(ex)}')")
 
