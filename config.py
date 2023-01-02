@@ -3,3 +3,4 @@ TGRCODE_API = 'https://tgrcode.com/mm2'
 DEBUG = True
 GUI = 'gtk'
 TGRCODE_API_COURSE_NUMBER = 10
+SHOW_EMPTY_SLOT = False

@@ -121,9 +121,9 @@ def deserialize_maker(maker: dict) -> Maker:
     )
 
 
-def search_endless_mode(count: int = 10, difficulty_id: str = 'e') -> list[Course]:
+def search_multiple_levels(api: str, count: int = 10, difficulty_id: str = 'e') -> list[Course]:
     response = requests.get(
-        url=f'{TGRCODE_API}/search_endless_mode',
+        url=f'{TGRCODE_API}/{api}',
         data={'difficulty': difficulty_id, 'count': count}
     )
     try:
@@ -134,6 +134,20 @@ def search_endless_mode(count: int = 10, difficulty_id: str = 'e') -> list[Cours
     for course in courses:
         ret.append(deserialize_course(course))
     return ret
+
+
+def search_endless_mode(count: int = 10, difficulty_id: str = 'e') -> list[Course]:
+    try:
+        return search_multiple_levels('search_endless_mode', count, difficulty_id)
+    except TGRCodeAPIException as ex:  # pass exception
+        raise TGRCodeAPIException(ex)
+
+
+def search_popular(count: int = 10, difficulty_id: str = 'e') -> list[Course]:
+    try:
+        return search_multiple_levels('search_popular', count, difficulty_id)
+    except TGRCodeAPIException as ex:  # pass exception
+        raise TGRCodeAPIException(ex)
 
 
 if __name__ == '__main__':

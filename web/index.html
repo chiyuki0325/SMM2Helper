@@ -12,19 +12,27 @@
             <h3 style="margin: 0; padding: 0; font-weight: normal">&nbsp;By YidaozhanYa</h3>
         </div>
         <div class="card main-card" id="left-card">
-            <ol id="local-courses" start="120">
+            <ol id="local-courses">
             </ol>
         </div>
     </div>
     <div class="right">
         <div class="main-head" style="align-items: center">
             <div class="tabs" id="tabs" state="loading">
-                <div id="e" class="tab tab-active" onclick="activeTab(this);">Easy</div>
+                <div id="e" class="tab tab-active" onclick="activeTab(this)">Easy</div>
                 <div id="n" class="tab" onclick="activeTab(this)">Normal</div>
                 <div id="ex" class="tab" onclick="activeTab(this)">Expert</div>
                 <div id="sex" class="tab" onclick="activeTab(this)">Super Expert</div>
-                <div id="new" class="tab" onclick="activeTab(this)">New</div>
-                <div id="popular" class="tab" onclick="activeTab(this)">Popular</div>
+            </div>
+            &nbsp;&nbsp;
+            <div class="tabs">
+                <button type="button"
+                        class="fluent-button fluent-button-secondary"
+                        onclick="switchRandom(this)"
+                        title="Random: Search courses from Endless Challenge
+Popular: Search courses from popular courses">
+                    Random
+                </button>
             </div>
         </div>
         <div class="card main-card" id="right-card">
@@ -40,7 +48,6 @@
     </div>
 </div>
 <script language="javascript">
-
     function finishResponse(response) {
         console.log('jsbridge response:' + response.message)
     }
@@ -48,7 +55,7 @@
     function GenerateCourseEntry(course_title, course_desc, course_idx) {
         const entry = document.createElement('li');
         entry.setAttribute('class', 'entry');
-        entry.setAttribute('onclick', 'activeEntry(this);');
+        entry.setAttribute('onclick', 'activeEntry(this)');
         const courseTitle = document.createElement('div');
         courseTitle.setAttribute('class', 'course-title text-limited');
         courseTitle.innerText = course_title;
@@ -123,6 +130,15 @@
 
     function clearOnlineCourse() {
         document.getElementById('online-courses').innerHTML = '';
+    }
+
+    function switchRandom(obj) {
+        pywebview.api.handle_switch_random().then(
+            (is_random) => {
+                obj.innerText = is_random ? 'Random' : 'Popular';
+                activeTab(document.getElementsByClassName('tab-active')[0]);
+            }
+        );
     }
 </script>
 </body>
