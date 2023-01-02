@@ -1,0 +1,48 @@
+.dialog-bg {
+    float: outside;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    visibility: hidden;
+}
+
+.dialog-box {
+    display: grid;
+    gap: 12px;
+    max-height: 915px;
+    max-width: 600px;
+    width: fit-content;
+    background: white;
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.12) 0 0 8px 0, rgba(0, 0, 0, 0.14) 0 32px 64px 0;
+    box-sizing: border-box;
+    padding: 20px;
+    position: fixed;
+    color: rgb(36, 36, 36);
+    opacity: 0;
+    transition-property: opacity;
+    transition-duration: 300ms;
+    transition-timing-function: cubic-bezier(0.33, 0, 0.67, 1);
+}
+
+.dialog-actions {
+    display: flex;
+    justify-self: end;
+    gap: 8px;
+}
+
+.dialog-title {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.dialog-content {
+    font-size: 14px;
+    font-weight: 400;
+}

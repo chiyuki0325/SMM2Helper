@@ -134,8 +134,13 @@ class Api:
 def webview_init(window: webview.Window):
     window.load_css(open(Path('./web/index.css')).read())
     window.load_css(open(Path('./web/button.css')).read())
+    window.load_css(open(Path('./web/dialog.css')).read())
+    window.load_css(open(Path('./web/message.css')).read())
     load_local_courses(window)
-    # load_online_random(window)
+    if config.LOAD_ONLINE_ON_START:
+        load_online_random(window)
+    else:
+        widgets.insert_online_course(window, 'Click a tab to load online courses.', '', 0)
     widgets.clear_tabs_state(window)
 
 

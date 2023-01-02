@@ -1,0 +1,29 @@
+.message {
+    height: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    padding: 6px;
+    margin: 10px;
+    transition-property: opacity, transform;
+    transition-duration: 300ms;
+    transition-timing-function: cubic-bezier(0.33, 0, 0.67, 1);
+    opacity: 0;
+    font-size: 14px;
+    transform: scaleY(0);
+}
+
+.error-message {
+    color: darkred;
+    background-color: #ff9999;
+}
+
+.float {
+    float: left;
+    width: 100vw;
+    top: 0;
+    position: absolute;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    visibility: hidden;
+}

@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>SMM2Helper</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="button.css">
+    <link rel="stylesheet" href="dialog.css">
+    <link rel="stylesheet" href="message.css">
 </head>
 <body>
 <div class="box">
@@ -42,9 +46,18 @@ Popular: Search courses from popular courses">
         </div>
     </div>
 </div>
-<div id="vars"></div>
 <div class="float" id="float">
     <div id="error-message" class="message error-message" onclick="hideErrorMessage()">
+    </div>
+</div>
+<div class="dialog-bg" id="dialog-bg">
+    <div class="dialog-box" id="dialog-box">
+        <div class="dialog-title" id="dialog-title"></div>
+        <div class="dialog-content" id="dialog-content"></div>
+        <div class="dialog-actions">
+            <button type="button" class="fluent-button fluent-button-secondary" id="dialog-button-no"></button>
+            <button type="button" class="fluent-button fluent-button-primary" id="dialog-button-yes"></button>
+        </div>
     </div>
 </div>
 <script language="javascript">
@@ -139,6 +152,29 @@ Popular: Search courses from popular courses">
                 activeTab(document.getElementsByClassName('tab-active')[0]);
             }
         );
+    }
+
+    function showDialog(title, content, yes_visible, yes_text, no_visible, no_text, dialog_callback_id) {
+        document.getElementById('dialog-bg').style.visibility = 'visible';
+        document.getElementById('dialog-box').style.opacity = 1;
+        document.getElementById('dialog-title').innerText = title;
+        document.getElementById('dialog-content').innerText = content;
+        const button_yes = document.getElementById('dialog-button-yes');
+        button_yes.setAttribute('callback-id', dialog_callback_id);
+        const button_no = document.getElementById('dialog-button-no');
+        button_no.setAttribute('callback-id', dialog_callback_id);
+        if (yes_visible) {
+            button_yes.style.visibility = 'visible';
+            button_yes.innerText = yes_text;
+        } else {
+            button_yes.style.visibility = 'hidden';
+        }
+        if (no_visible) {
+            button_no.style.visibility = 'visible';
+            button_no.innerText = no_text;
+        } else {
+            button_no.style.visibility = 'hidden';
+        }
     }
 </script>
 </body>
