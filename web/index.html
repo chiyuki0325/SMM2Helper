@@ -73,6 +73,11 @@
             overflow: auto;
         }
 
+        ol {
+            padding: 0;
+            margin: 0;
+        }
+
         .entry {
             border-radius: 4px;
             height: 50px !important;
@@ -82,6 +87,9 @@
             padding-right: 8px;
             margin-right: 3px;
             width: inherit !important;
+            transition-property: background-color;
+            transition-duration: 100ms;
+            transition-timing-function: cubic-bezier(0.33, 0, 0.67, 1);
         }
 
         .entry:hover {
@@ -104,6 +112,10 @@
             scale: 0;
             pointer-events: none;
             transition: all ease-in-out .1s;
+        }
+
+        .entry::marker {
+            visibility: hidden;
         }
 
         .entry-active::before {
@@ -171,6 +183,8 @@
             <h3 style="margin: 0; padding: 0; font-weight: normal">&nbsp;By YidaozhanYa</h3>
         </div>
         <div class="card main-card" id="left-card">
+            <ol id="local-courses" start="120">
+            </ol>
         </div>
     </div>
     <div class="right">
@@ -185,9 +199,9 @@
             </div>
         </div>
         <div class="card main-card" id="right-card">
-            <div id="right-courses"></div>
-            <div id="right-course"></div>
-            <div id="right-maker"></div>
+            <ol id="online-courses"></ol>
+            <div id="online-course"></div>
+            <div id="online-maker"></div>
         </div>
     </div>
 </div>
@@ -202,8 +216,8 @@
         console.log('jsbridge response:' + response.message)
     }
 
-    function GenerateCourseEntry(course_title, course_desc) {
-        const entry = document.createElement('div');
+    function GenerateCourseEntry(course_title, course_desc, course_idx) {
+        const entry = document.createElement('li');
         entry.setAttribute('class', 'entry');
         entry.setAttribute('onclick', 'activeEntry(this);');
         const courseTitle = document.createElement('div');
@@ -216,18 +230,19 @@
         entryContent.setAttribute('class', 'entry-content');
         entryContent.appendChild(courseTitle);
         entryContent.appendChild(courseDesc);
+        entry.setAttribute('idx', course_idx);
         entry.appendChild(entryContent);
         return entry;
     }
 
-    function insertMyCourse(course_title, course_desc) {
-        const entry = GenerateCourseEntry(course_title, course_desc)
-        document.getElementById('left-card').appendChild(entry);
+    function insertMyCourse(course_title, course_desc, course_idx) {
+        const entry = GenerateCourseEntry(course_title, course_desc, course_idx);
+        document.getElementById('local-courses').appendChild(entry);
     }
 
-    function insertOnlineCourse(course_title, course_desc) {
-        const entry = GenerateCourseEntry(course_title, course_desc)
-        document.getElementById('right-courses').appendChild(entry);
+    function insertOnlineCourse(course_title, course_desc, course_idx) {
+        const entry = GenerateCourseEntry(course_title, course_desc, course_idx);
+        document.getElementById('online-courses').appendChild(entry);
     }
 
     function activeEntry(obj) {
@@ -278,7 +293,7 @@
     }
 
     function clearOnlineCourse() {
-        document.getElementById('right-courses').innerHTML = '';
+        document.getElementById('online-courses').innerHTML = '';
     }
 </script>
 </body>

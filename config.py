@@ -2,3 +2,4 @@ SAVE_DIR = '/home/yidaozhan/.local/share/yuzu/nand/user/save/0000000000000000/69
 TGRCODE_API = 'https://tgrcode.com/mm2'
 DEBUG = True
 GUI = 'gtk'
+TGRCODE_API_COURSE_NUMBER = 10

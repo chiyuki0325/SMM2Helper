@@ -15,7 +15,7 @@ from tgrcode_api import Course as OnlineCourse
 from tgrcode_api import Maker as OnlineMaker
 import config
 
-course_list_cache: list[OnlineCourse] = []
+online_course_list_cache: list[OnlineCourse] = []
 
 
 def prettify_course_id(course_id: str) -> str:
@@ -41,27 +41,35 @@ def load_local_courses(window: webview.Window):
                 widgets.insert_my_course(window, decrypted_course.HEADER.NAME,
                                          f'#{course[0]} | '
                                          f'{GAME_STYLE_NAMES[decrypted_course.HEADER.GAME_STYLE]} | '
-                                         f'{decrypted_course.HEADER.DESCRIPTION}')
+                                         f'{decrypted_course.HEADER.DESCRIPTION}',
+                                         course[0])
             else:
                 widgets.insert_my_course(window, decrypted_course.HEADER.NAME,
                                          f'#{course[0]} | '
-                                         f'{GAME_STYLE_NAMES[decrypted_course.HEADER.GAME_STYLE]}')
+                                         f'{GAME_STYLE_NAMES[decrypted_course.HEADER.GAME_STYLE]}',
+                                         course[0])
         else:
-            widgets.insert_my_course(window, '(Empty Slot)', f'#{course[0]}')
+            widgets.insert_my_course(window, '(Empty Slot)', f'#{course[0]}', course[0])
 
 
 def load_online_endless(window: webview.Window,
-                        count: int = 10,
+                        count: int = config.TGRCODE_API_COURSE_NUMBER,
                         difficulty_id: str = 'e'):
-    global course_list_cache
+    global online_course_list_cache
     print('Loading Endless Challenge ...')
+    widgets.clear_online_course(window)
+    widgets.insert_online_course(window, 'Loading ...', 'Please wait.', 0)
     try:
         courses: list[OnlineCourse] = tgrcode_api.search_endless_mode(count, difficulty_id)
-        course_list_cache = courses
-        for course in courses:
-            widgets.insert_online_course(window, course.name, f'{course.game_style} | '
-                                                              f'{course.maker.name} | '
-                                                              f'{prettify_course_id(course.course_id)}')
+        widgets.clear_online_course(window)
+        online_course_list_cache = courses
+        for idx in range(0, len(courses)):
+            course = courses[idx]
+            widgets.insert_online_course(window, course.name,
+                                         f'{course.game_style} | '
+                                         f'{course.maker.name} | '
+                                         f'{prettify_course_id(course.course_id)}',
+                                         idx)
     except tgrcode_api.TGRCodeAPIException as ex:
         widgets.show_error_message(window, str(ex))
 
@@ -70,8 +78,7 @@ class Api:
     def handle_tab_active(self, tab_id: str):
         global window
         if tab_id in ['e', 'n', 'ex', 'sex']:
-            widgets.clear_online_course(window)
-            load_online_endless(window, 10, tab_id)
+            load_online_endless(window, config.TGRCODE_API_COURSE_NUMBER, tab_id)
         else:
             pass
 
