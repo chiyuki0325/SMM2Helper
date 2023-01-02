@@ -57,7 +57,8 @@ class StreamIn:
                 if len(read) == 1:
                     return read
                 elif len(read) == 2:
-                    return struct.pack("<H", struct.unpack(">H", read)[0])
+                    return read
+                    # return struct.pack("<H", struct.unpack(">H", read)[0])
                 elif len(read) == 8:
                     return struct.pack("<q", struct.unpack(">q", read)[0])
                 else:

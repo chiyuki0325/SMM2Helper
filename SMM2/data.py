@@ -17,11 +17,11 @@ PLAYER_NAMES = {
 }
 
 GAME_STYLE_NAMES = {
-    "M1": "Super Mario Bros.",
-    "M3": "Super Mario Bros. 3",
-    "MW": "Super Mario World",
-    "WU": "New Super Mario Bros. U",
-    "3W": "Super Mario 3D World"
+    b"M1": "SMB",
+    b"M3": "SMB3",
+    b"MW": "SMW",
+    b"WU": "NSMBU",
+    b"3W": "SM3DW"
 }
 
 COURSE_THEME_NAMES = [
