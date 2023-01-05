@@ -161,4 +161,4 @@ def webview_init(window: webview.Window):
 if __name__ == '__main__':
     api = Api()
     window = webview.create_window('SMM2Helper', html=open(Path('./web/index.html')).read(), js_api=api)
-    webview.start(webview_init, window, gui=config.GUI, debug=config.DEBUG)
+    webview.start(webview_init, window, gui='gtk', debug=config.DEBUG)
