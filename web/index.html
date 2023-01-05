@@ -131,6 +131,7 @@ Popular: Search courses from popular courses">
     </div>
 </div>
 <script language="javascript">
+    const dialogCallback = {}
     function finishResponse(response) {
         console.log('jsbridge response:' + response.message)
     }
@@ -256,13 +257,16 @@ Popular: Search courses from popular courses">
     }
 
     function showDialog(title, content, yes_visible, yes_text, no_visible, no_text, dialog_callback_id) {
+        delete dialogCallback[dialog_callback_id];
         document.getElementById('dialog-bg').style.visibility = 'visible';
         document.getElementById('dialog-box').style.opacity = '1';
         fillInnerText('dialog-title', title);
         fillInnerText('dialog-content', content);
         const button_yes = document.getElementById('dialog-button-yes');
+        button_yes.setAttribute('onclick', `dialogButtonCallback(true, '${dialog_callback_id}');`)
         button_yes.setAttribute('callback-id', dialog_callback_id);
         const button_no = document.getElementById('dialog-button-no');
+        button_no.setAttribute('onclick', `dialogButtonCallback(false, '${dialog_callback_id}');`)
         button_no.setAttribute('callback-id', dialog_callback_id);
         if (yes_visible) {
             button_yes.style.visibility = 'visible';
@@ -276,6 +280,12 @@ Popular: Search courses from popular courses">
         } else {
             button_no.style.visibility = 'hidden';
         }
+    }
+
+    function dialogButtonCallback(is_yes_button, dialog_callback_id) {
+        document.getElementById('dialog-bg').style.visibility = 'hidden';
+        document.getElementById('dialog-box').style.opacity = '0';
+        dialogCallback[dialog_callback_id] = is_yes_button;
     }
 
     function showOnlineCourseDetails(idx, name, description, uploaded_date, course_id, data_id, game_style, theme,
@@ -340,11 +350,12 @@ Popular: Search courses from popular courses">
         onlineCourses.style.opacity = '1';
     }
 
-    function downloadCourseToSlot() {
+    async function downloadCourseToSlot() {
+        let idx, slotTitle;
         try {
             const activeSlot = document.getElementById('local-courses').getElementsByClassName('entry-active')[0];
-            const idx = activeSlot.getAttribute('idx');
-            const slotTitle = activeSlot.firstChild.firstChild.innerText;
+            idx = activeSlot.getAttribute('idx');
+            slotTitle = activeSlot.firstChild.firstChild.innerText;
             if (slotTitle === '(Empty Slot)') {
                 showErrorMessage('Cannot download to empty slot. You can only replace existing courses.');
                 return
@@ -354,7 +365,20 @@ Popular: Search courses from popular courses">
             return
         }
         const dataId = document.getElementById('online-course').getAttribute('data-id');
-
+        showDialog('Download Course',
+            `Download "${document.getElementById('details-course-title').innerText}" (${document.getElementById('details-course-id').innerText}) ` +
+            `to slot #${idx} and replace "${slotTitle}"？`, true, 'Yes', true, 'No', 'download-course'
+        )
+        while (dialogCallback.hasOwnProperty('download-course')) {
+            await null;
+        }
+        if (dialogCallback['download-course'] === true) {
+            pywebview.api.handle_download_course_to_slot(idx, dataId).then(
+                () => console.log(`Downloading ${dataId} to slot ${idx}`),
+                (err) => showErrorMessage(err)
+            )
+        }
+        delete dialogCallback['download-course']
     }
 </script>
 </body>
