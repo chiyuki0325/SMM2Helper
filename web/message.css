@@ -6,15 +6,11 @@
     margin: 10px;
     transition-property: opacity, transform;
     transition-duration: 300ms;
-    transition-timing-function: cubic-bezier(0.33, 0, 0.67, 1);
+    transition-timing-function: ease-in-out;
     opacity: 0;
     font-size: 14px;
     transform: scaleY(0);
-}
-
-.error-message {
-    color: darkred;
-    background-color: #ff9999;
+    width: max-content;
 }
 
 .float {
@@ -23,7 +19,21 @@
     top: 0;
     position: absolute;
     display: flex;
-    align-content: center;
-    justify-content: center;
-    visibility: hidden;
+    flex-direction: column;
+    align-items: center;
+}
+
+.error-message {
+    color: darkred;
+    background-color: #ff9999;
+}
+
+.info-message {
+    color: #668390;
+    background-color: #f2fdff;
+}
+
+.success-message {
+    color: #335b19;
+    background-color: #e1fff2;
 }

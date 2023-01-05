@@ -7,6 +7,7 @@ from SMM2.course import Course as DecryptedCourse
 from SMM2.data import GAME_STYLE_NAMES
 
 from pathlib import Path
+import webbrowser
 import pyclip
 
 import webview
@@ -135,6 +136,12 @@ class Api:
 
     def handle_copy_text(self, text_to_copy: str):
         pyclip.copy(text_to_copy)
+
+    def handle_open_link(self, link: str):
+        webbrowser.open(link)
+
+    def handle_download_course_to_slot(self, course_data_id: str, slot_idx: str):
+        pass
 
 
 def webview_init(window: webview.Window):
