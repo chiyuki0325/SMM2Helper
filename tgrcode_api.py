@@ -127,8 +127,7 @@ def deserialize_maker(maker: dict) -> Maker:
 
 def search_multiple_levels(api: str, count: int = 10, difficulty_id: str = 'e') -> list[Course]:
     response = requests.get(
-        url=f'{TGRCODE_API}/{api}',
-        data={'difficulty': difficulty_id, 'count': count}
+        url=f'{TGRCODE_API}/{api}?difficulty={difficulty_id}&count={count}'
     )
     try:
         courses = response.json()['courses']
