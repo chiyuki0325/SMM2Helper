@@ -43,7 +43,7 @@
 }
 
 .details-course-maker::before {
-    content: url("https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Person/SVG/ic_fluent_person_20_regular.svg");
+    content: url("/res/ic_fluent_person_20_regular.svg");
     padding-right: 4px;
 }
 
@@ -54,12 +54,12 @@
 }
 
 .details-course-description::before {
-    content: url("https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Edit/SVG/ic_fluent_edit_20_regular.svg");
+    content: url("/res/ic_fluent_edit_20_regular.svg");
     padding-right: 4px;
 }
 
 .details-course-upload-time::before {
-    content: url("https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Clock/SVG/ic_fluent_clock_20_regular.svg");
+    content: url("/res/ic_fluent_clock_20_regular.svg");
     padding-right: 4px;
 }
 
@@ -90,7 +90,7 @@
 }
 
 .details-course-scene::before {
-    content: url("https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Brightness High/SVG/ic_fluent_brightness_high_20_regular.svg");
+    content: url("/res/ic_fluent_brightness_high_20_regular.svg");
 }
 
 .details-course-scene {
@@ -101,7 +101,7 @@
 }
 
 .details-course-difficulty::before {
-    content: url("https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Text Bullet List Tree/SVG/ic_fluent_text_bullet_list_tree_20_regular.svg");
+    content: url("/res/ic_fluent_text_bullet_list_tree_20_regular.svg");
     padding-right: 4px;
 }
 
@@ -113,11 +113,11 @@
 }
 
 .details-course-rate::before {
-    content: url("https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Ribbon/SVG/ic_fluent_ribbon_20_regular.svg");
+    content: url("/res/ic_fluent_ribbon_20_regular.svg");
 }
 
 .details-course-record-holder::before {
-    content: url("https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Ribbon Star/SVG/ic_fluent_ribbon_star_20_regular.svg");
+    content: url("/res/ic_fluent_ribbon_star_20_regular.svg");
     padding-right: 4px;
 }
 
@@ -128,26 +128,26 @@
 }
 
 .details-course-likes::before {
-    content: url("https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Heart/SVG/ic_fluent_heart_20_regular.svg");
+    content: url("/res/ic_fluent_heart_20_regular.svg");
     padding-right: 4px;
 }
 
 .details-course-boos::before {
-    content: url("https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Heart Broken/SVG/ic_fluent_heart_broken_20_regular.svg");
+    content: url("/res/ic_fluent_heart_broken_20_regular.svg");
     padding-right: 4px;
 }
 
 .details-course-id::before {
-    content: url("https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Number Symbol/SVG/ic_fluent_number_symbol_20_regular.svg");
+    content: url("/res/ic_fluent_number_symbol_20_regular.svg");
     padding-right: 4px;
 }
 
 .details-course-tag-1::before {
-    content: url("https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Tag/SVG/ic_fluent_tag_20_regular.svg");
+    content: url("/res/ic_fluent_tag_20_regular.svg");
     padding-right: 4px;
 }
 .details-course-tag-2::before {
-    content: url("https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Tag/SVG/ic_fluent_tag_20_regular.svg");
+    content: url("/res/ic_fluent_tag_20_regular.svg");
     padding-right: 4px;
 }
 

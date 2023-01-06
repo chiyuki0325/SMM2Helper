@@ -8,9 +8,10 @@ from SMM2.data import GAME_STYLE_NAMES
 
 from pathlib import Path
 import webbrowser
-import pyclip
 
+import pyclip
 import webview
+
 import widgets
 import tgrcode_api
 from tgrcode_api import Course as OnlineCourse
@@ -145,11 +146,6 @@ class Api:
 
 
 def webview_init(window: webview.Window):
-    window.load_css(open(Path('./web/index.css')).read())
-    window.load_css(open(Path('./web/button.css')).read())
-    window.load_css(open(Path('./web/dialog.css')).read())
-    window.load_css(open(Path('./web/message.css')).read())
-    window.load_css(open(Path('./web/details.css')).read())
     load_local_courses(window)
     if config.LOAD_ONLINE_ON_START:
         load_online_random(window)
@@ -159,6 +155,6 @@ def webview_init(window: webview.Window):
 
 
 if __name__ == '__main__':
-    api = Api()
-    window = webview.create_window('SMM2Helper', html=open(Path('./web/index.html')).read(), js_api=api)
-    webview.start(webview_init, window, gui='gtk', debug=config.DEBUG)
+    api: Api = Api()
+    window = webview.create_window('SMM2Helper', url='web/index.html', js_api=api)
+    webview.start(webview_init, window, gui='gtk', debug=config.DEBUG, http_server=True)
