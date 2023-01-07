@@ -26,6 +26,8 @@ for file in "SMM2" "web"; do
     cp -r "$file" "${RELEASE_DIR}/${file}"
 done
 
+rm -rf "${RELEASE_DIR}/SMM2/__pycache__"
+
 cp requirements-windows.txt "${RELEASE_DIR}/requirements.txt"
 cp WindowsLauncher/SMM2Helper.exe "${RELEASE_DIR}/SMM2Helper.exe"
 
