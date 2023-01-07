@@ -2,6 +2,4 @@ nintendoclients==0.0.3
 pywebview
 requests
 pyclip
-pyqt5
-pyqtwebengine
-qtpy
+pythonnet
