@@ -2,14 +2,22 @@
 
 from dataclasses import dataclass
 import requests
-from enum import Enum
+import rapidjson as json
 
 from config import TGRCODE_API, VERSION
 
 USER_AGENT = f'SMM2Helper/{VERSION} HiddenSuperStar/0.0.4'
 
 
-class TGRCodeAPIException(BaseException):
+class TGRCodeAPIBaseException(BaseException):
+    pass
+
+
+class TGRCodeAPIException(TGRCodeAPIBaseException):
+    pass
+
+
+class TGRCodeAPICourseIDException(TGRCodeAPIBaseException):
     pass
 
 
@@ -68,7 +76,14 @@ class Course:
 
 
 def prettify_course_id(course_id: str) -> str:
-    return f'{course_id[0:3]}-{course_id[3:6]}-{course_id[6:9]}'
+    return f'{course_id[0:3]}-{course_id[3:6]}-{course_id[6:9]}'.upper()
+
+
+def normalize_course_id(course_id: str) -> str:
+    ret: str = course_id.translate(dict.fromkeys(map(ord, '-_ '), None)).upper()
+    if len(ret) != 9:
+        raise TGRCodeAPICourseIDException('Invalid course ID.')
+    return ret
 
 
 def deserialize_course(course: dict) -> Course:
@@ -135,7 +150,7 @@ def search_multiple_levels(api: str, count: int = 10, difficulty_id: str = 'e') 
         headers={'User-Agent': USER_AGENT}
     )
     try:
-        courses = response.json()['courses']
+        courses = json.loads(response.text)['courses']
     except requests.exceptions.JSONDecodeError:
         raise TGRCodeAPIException(response.text)
     ret: list[Course] = []
@@ -172,5 +187,12 @@ def level_data_dataid(data_id: int) -> bytes:
         raise TGRCodeAPIException(ex)
 
 
-if __name__ == '__main__':
-    print(search_endless_mode())
+def level_info(course_id: str) -> Course:
+    try:
+        response = requests.get(
+            url=f'{TGRCODE_API}/level_info/{normalize_course_id(course_id)}',
+            headers={'User-Agent': USER_AGENT}
+        )
+        return deserialize_course(json.loads(response.text))
+    except TGRCodeAPIException as ex:  # pass exception
+        raise TGRCodeAPIException(ex)

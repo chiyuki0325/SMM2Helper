@@ -229,6 +229,10 @@ function backToOnlineCourseList() {
 }
 
 function downloadCourseToSlot() {
+    if (pywebview.api.downloading) {
+        showInfoMessage('Another download is in progress, please wait ...');
+        return
+    }
     let idx, slotTitle;
     try {
         const activeSlot = document.getElementById('local-courses').getElementsByClassName('entry-active')[0];
@@ -248,4 +252,10 @@ function downloadCourseToSlot() {
         `to slot #${idx} and replace "${slotTitle}"？`, true, 'Yes', true, 'No', 'download-course',
         {'data_id': dataId, 'idx': idx}
     )
+}
+
+function searchCourse() {
+    let course_id;
+    course_id = prompt('Enter course ID:');
+
 }

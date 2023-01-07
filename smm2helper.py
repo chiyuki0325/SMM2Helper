@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-import os
 
 from SMM2.encryption import Save as EncryptedSave
 from SMM2.save import Save as DecryptedSave
@@ -88,7 +87,7 @@ def load_online_random(window: webview.Window,
                                          f'{course.maker.name} | '
                                          f'{tgrcode_api.prettify_course_id(course.course_id)}',
                                          idx)
-    except tgrcode_api.TGRCodeAPIException as ex:
+    except tgrcode_api.TGRCodeAPIBaseException as ex:
         widgets.show_error_message(window, str(ex))
 
 
@@ -110,13 +109,14 @@ def load_online_popular(window: webview.Window,
                                          f'{course.maker.name} | '
                                          f'{tgrcode_api.prettify_course_id(course.course_id)}',
                                          idx)
-    except tgrcode_api.TGRCodeAPIException as ex:
+    except tgrcode_api.TGRCodeAPIBaseException as ex:
         widgets.show_error_message(window, str(ex))
 
 
 class Api:
     def __init__(self):
         self.is_random: bool = True  # True: random / False: popular
+        self.downloading: bool = False
 
     def handle_tab_active(self, tab_id: str):
         global window
@@ -145,15 +145,26 @@ class Api:
         webbrowser.open(link)
 
     def handle_download_course_to_slot(self, course_data_id: str, slot_idx: str):
+        self.downloading = True
         print(f'Download {course_data_id} to slot #{slot_idx} ...')
         widgets.show_info_message(window, f'Download {course_data_id} to slot #{slot_idx} ...')
         output_file = Path(save_dir / Path(f'course_data_{slot_idx.rjust(3, "0")}.bcd'))
-        output_file.rename(Path(save_dir / Path(f'course_data_{slot_idx.rjust(3, "0")}.bcd.bak')))
+        backup_file = Path(save_dir / Path(f'course_data_{slot_idx.rjust(3, "0")}.bcd.bak'))
+        output_file.rename(backup_file)
         with output_file.open('wb') as file_handle:
-            file_handle.write(tgrcode_api.level_data_dataid(int(course_data_id)))
+            try:
+                file_handle.write(tgrcode_api.level_data_dataid(int(course_data_id)))
+            except Exception as ex:
+                widgets.show_error_message(window, str(ex))
+                if output_file.exists():
+                    output_file.unlink()
+                backup_file.rename(output_file)
+                self.downloading = False
+                return
         widgets.show_success_message(window, 'Download completed')
         widgets.clear_local_course(window)
         load_local_courses(window)
+        self.downloading = False
 
 
 def webview_init(window: webview.Window):
