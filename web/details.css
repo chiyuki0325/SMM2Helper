@@ -10,6 +10,7 @@
 
 .details-img-small {
     width: 200px;
+    height: 123px;
     border-radius: 4px;
 }
 
@@ -75,14 +76,14 @@
 }
 
 .details-others-left {
-    width: 50%;
+    width: 40%;
     display: flex;
     flex-direction: column;
     gap: 4px;
 }
 
 .details-others-right {
-    width: 50%;
+    width: 60%;
     flex: 1;
     display: flex;
     flex-direction: column;

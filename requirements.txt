@@ -3,3 +3,4 @@ pywebview
 requests
 pygobject
 pyclip
+python-rapidjson

@@ -1,8 +1,12 @@
+# Credits: TheGreatRambler for creating and maintaining the API: https://tgrcode.com/posts/mario_maker_2_api
+
 from dataclasses import dataclass
 import requests
 from enum import Enum
 
-from config import TGRCODE_API
+from config import TGRCODE_API, VERSION
+
+USER_AGENT = f'SMM2Helper/{VERSION} HiddenSuperStar/0.0.4'
 
 
 class TGRCodeAPIException(BaseException):
@@ -127,7 +131,8 @@ def deserialize_maker(maker: dict) -> Maker:
 
 def search_multiple_levels(api: str, count: int = 10, difficulty_id: str = 'e') -> list[Course]:
     response = requests.get(
-        url=f'{TGRCODE_API}/{api}?difficulty={difficulty_id}&count={count}'
+        url=f'{TGRCODE_API}/{api}?difficulty={difficulty_id}&count={count}',
+        headers={'User-Agent': USER_AGENT}
     )
     try:
         courses = response.json()['courses']
@@ -150,6 +155,20 @@ def search_popular(count: int = 10, difficulty_id: str = 'e') -> list[Course]:
     try:
         return search_multiple_levels('search_popular', count, difficulty_id)
     except TGRCodeAPIException as ex:  # pass exception
+        raise TGRCodeAPIException(ex)
+
+
+def level_data_dataid(data_id: int) -> bytes:
+    try:
+        response = requests.get(
+            url=f'{TGRCODE_API}/level_data_dataid/{data_id}',
+            headers={'User-Agent': USER_AGENT}
+        )
+        if response.status_code == 200:
+            return response.content
+        else:
+            raise TGRCodeAPIException(response.text)
+    except Exception as ex:  # pass exception
         raise TGRCodeAPIException(ex)
 
 

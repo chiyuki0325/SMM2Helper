@@ -1,5 +1,3 @@
-const dialogCallback = {}
-
 function finishResponse(response) {
     console.log('jsbridge response:' + response.message)
 }
@@ -18,7 +16,7 @@ function GenerateCourseEntry(course_title, course_desc, course_idx) {
     entryContent.setAttribute('class', 'entry-content');
     entryContent.appendChild(courseTitle);
     entryContent.appendChild(courseDesc);
-    entry.setAttribute('idx', course_idx);
+    entry.setAttribute('data-idx', course_idx);
     entry.appendChild(entryContent);
     return entry;
 }
@@ -41,7 +39,7 @@ function activeEntry(obj) {
             element.setAttribute('class', 'entry');
         }
     )
-    pywebview.api.handle_entry_click(obj.parentNode.id, obj.getAttribute('idx')).then(
+    pywebview.api.handle_entry_click(obj.parentNode.id, obj.getAttribute('data-idx')).then(
         () => {
             obj.setAttribute('class', 'entry entry-active')
         }
@@ -50,10 +48,10 @@ function activeEntry(obj) {
 
 function activeTab(obj) {
     const tabs = document.getElementById('tabs');
-    if (tabs.getAttribute('state') === 'loading') {
+    if (tabs.getAttribute('data-state') === 'loading') {
         return;
     }
-    tabs.setAttribute('state', 'loading');
+    tabs.setAttribute('data-state', 'loading');
     Array.from(
         document.getElementsByClassName('tab')
     ).forEach(
@@ -62,7 +60,7 @@ function activeTab(obj) {
         }
     )
     obj.setAttribute('class', 'tab tab-active');
-    pywebview.api.handle_tab_active(obj.id).then(() => tabs.removeAttribute('state'), (err) => showErrorMessage(err))
+    pywebview.api.handle_tab_active(obj.id).then(() => tabs.removeAttribute('data-state'), (err) => showErrorMessage(err))
 }
 
 function showMessage(message_content, message_type) {
@@ -107,9 +105,13 @@ function clearOnlineCourse() {
     document.getElementById('online-courses').innerHTML = '';
 }
 
+function clearLocalCourse() {
+    document.getElementById('local-courses').innerHTML = '';
+}
+
 function switchRandom(obj) {
     const tabs = document.getElementById('tabs');
-    if (tabs.getAttribute('state') === 'loading') {
+    if (tabs.getAttribute('data-state') === 'loading') {
         return;
     }
     pywebview.api.handle_switch_random().then(
@@ -124,18 +126,16 @@ function fillInnerText(id, content) {
     document.getElementById(id).innerText = content;
 }
 
-function showDialog(title, content, yes_visible, yes_text, no_visible, no_text, dialog_callback_id) {
-    delete dialogCallback[dialog_callback_id];
+function showDialog(title, content, yes_visible, yes_text, no_visible, no_text, dialog_callback_id, dialog_callback_object) {
     document.getElementById('dialog-bg').style.visibility = 'visible';
     document.getElementById('dialog-box').style.opacity = '1';
     fillInnerText('dialog-title', title);
     fillInnerText('dialog-content', content);
     const button_yes = document.getElementById('dialog-button-yes');
-    button_yes.setAttribute('onclick', `dialogButtonCallback(true, '${dialog_callback_id}');`)
-    button_yes.setAttribute('callback-id', dialog_callback_id);
+    const onclick_function = `dialogButtonCallback(true, '${dialog_callback_id}', '${encodeURIComponent(JSON.stringify(dialog_callback_object))}');`;
+    button_yes.setAttribute('onclick', onclick_function)
     const button_no = document.getElementById('dialog-button-no');
-    button_no.setAttribute('onclick', `dialogButtonCallback(false, '${dialog_callback_id}');`)
-    button_no.setAttribute('callback-id', dialog_callback_id);
+    button_no.setAttribute('onclick', onclick_function)
     if (yes_visible) {
         button_yes.style.visibility = 'visible';
         button_yes.innerText = yes_text;
@@ -150,10 +150,20 @@ function showDialog(title, content, yes_visible, yes_text, no_visible, no_text, 
     }
 }
 
-function dialogButtonCallback(is_yes_button, dialog_callback_id) {
+function dialogButtonCallback(value, dialog_callback_id, dialog_callback_object) {
+    const callback = JSON.parse(decodeURIComponent(dialog_callback_object))
     document.getElementById('dialog-bg').style.visibility = 'hidden';
     document.getElementById('dialog-box').style.opacity = '0';
-    dialogCallback[dialog_callback_id] = is_yes_button;
+    switch (dialog_callback_id) {
+        case 'download-course':
+            if (value === true) {
+                pywebview.api.handle_download_course_to_slot(callback.data_id, callback.idx).then(
+                    () => console.log(`Downloading ${callback.data_id} to slot ${callback.idx}`),
+                    (err) => showErrorMessage(err)
+                )
+            }
+            break;
+    }
 }
 
 function showOnlineCourseDetails(idx, name, description, uploaded_date, course_id, data_id, game_style, theme,
@@ -167,8 +177,8 @@ function showOnlineCourseDetails(idx, name, description, uploaded_date, course_i
         onlineCourses.style.visibility = 'hidden';
     }, 200);
     const onlineCourse = document.getElementById('online-course');
-    onlineCourse.setAttribute('idx', idx);
-    onlineCourse.setAttribute('data-id', data_id);
+    onlineCourse.setAttribute('data-idx', idx);
+    onlineCourse.setAttribute('data-data-id', data_id);
     fillInnerText('details-course-title', name);
     fillInnerText('details-course-description', description);
     document.getElementById('details-course-description').setAttribute('title', description);
@@ -218,11 +228,11 @@ function backToOnlineCourseList() {
     onlineCourses.style.opacity = '1';
 }
 
-async function downloadCourseToSlot() {
+function downloadCourseToSlot() {
     let idx, slotTitle;
     try {
         const activeSlot = document.getElementById('local-courses').getElementsByClassName('entry-active')[0];
-        idx = activeSlot.getAttribute('idx');
+        idx = activeSlot.getAttribute('data-idx');
         slotTitle = activeSlot.firstChild.firstChild.innerText;
         if (slotTitle === '(Empty Slot)') {
             showErrorMessage('Cannot download to empty slot. You can only replace existing courses.');
@@ -232,19 +242,10 @@ async function downloadCourseToSlot() {
         showErrorMessage('Please select a local slot first.');
         return
     }
-    const dataId = document.getElementById('online-course').getAttribute('data-id');
+    const dataId = document.getElementById('online-course').getAttribute('data-data-id');
     showDialog('Download Course',
         `Download "${document.getElementById('details-course-title').innerText}" (${document.getElementById('details-course-id').innerText}) ` +
-        `to slot #${idx} and replace "${slotTitle}"？`, true, 'Yes', true, 'No', 'download-course'
+        `to slot #${idx} and replace "${slotTitle}"？`, true, 'Yes', true, 'No', 'download-course',
+        {'data_id': dataId, 'idx': idx}
     )
-    while (dialogCallback.hasOwnProperty('download-course')) {
-        await null;
-    }
-    if (dialogCallback['download-course'] === true) {
-        pywebview.api.handle_download_course_to_slot(idx, dataId).then(
-            () => console.log(`Downloading ${dataId} to slot ${idx}`),
-            (err) => showErrorMessage(err)
-        )
-    }
-    delete dialogCallback['download-course']
 }

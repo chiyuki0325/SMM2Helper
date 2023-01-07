@@ -11,7 +11,7 @@ Currently in work-in-progress state, unusable.
 - [x] Course listing & browsing
 - [x] Browsing online courses from Endless Challenge and popular courses
 - [x] Course details view
-- [ ] Course download
+- [x] Course download
 - [ ] Search
 - [ ] Maker details view
 

@@ -4,6 +4,7 @@ from tgrcode_api import Course as OnlineCourse
 from tgrcode_api import Maker as OnlineMaker
 from tgrcode_api import prettify_course_id
 from config import TGRCODE_API, SHOW_THUMBNAILS
+import rapidjson as json
 
 
 def quote_vars(*args):
@@ -33,6 +34,10 @@ def insert_online_course(window: Window, course_title: str, course_desc: str, id
                        f"{idx});")
 
 
+def clear_local_course(window: Window):
+    window.evaluate_js("clearLocalCourse();")
+
+
 def clear_online_course(window: Window):
     window.evaluate_js("clearOnlineCourse();")
 
@@ -41,14 +46,22 @@ def clear_tabs_state(window: Window):
     window.evaluate_js("document.getElementById('tabs').removeAttribute('state');")
 
 
-def show_error_message(window: Window, error_message: str):
-    window.evaluate_js(f"showErrorMessage('{error_message}')")
+def show_error_message(window: Window, message: str):
+    window.evaluate_js(f"showErrorMessage('{message}')")
+
+
+def show_success_message(window: Window, message: str):
+    window.evaluate_js(f"showSuccessMessage('{message}')")
+
+
+def show_info_message(window: Window, message: str):
+    window.evaluate_js(f"showInfoMessage('{message}')")
 
 
 def show_dialog(window: Window,
                 title: str, content: str, yes_visible: bool = True,
                 yes_text: str = "Yes", no_visible: bool = True, no_text: str = "No",
-                dialog_callback_id: str = 'default'):
+                dialog_callback_id: str = 'default', dialog_callback_object: dict = {}):
     title, content, yes_text, no_text = quote_vars(title, content, yes_text, no_text)
     window.evaluate_js(f"showDialog(decodeURIComponent('{title}'),"
                        f"decodeURIComponent('{content}'),"
@@ -56,7 +69,8 @@ def show_dialog(window: Window,
                        f"decodeURIComponent('{yes_text}'),"
                        f"'{str(no_visible).lower()}',"
                        f"decodeURIComponent('{no_text}'),"
-                       f"{dialog_callback_id};")
+                       f"{dialog_callback_id},"
+                       f"{json.dumps(dialog_callback_object)};")
 
 
 def show_online_course_details(window: Window, idx: int, course: OnlineCourse):
@@ -68,7 +82,7 @@ def show_online_course_details(window: Window, idx: int, course: OnlineCourse):
                        f"'{prettify_course_id(course.course_id)}',"
                        f"{course.data_id},"
                        f"'{course.game_style}',"
-                       f"'{course.theme}',"
+                       f"'{course.theme.split(' ')[0]}',"
                        f"'{course.difficulty}',"
                        f"'{course.tag_1}',"
                        f"'{course.tag_2}',"

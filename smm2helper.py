@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+import os
+
 from SMM2.encryption import Save as EncryptedSave
 from SMM2.save import Save as DecryptedSave
 from SMM2.save import SLOT_STATUS
@@ -20,7 +22,6 @@ import config
 
 save_dir: Path = Path(config.SAVE_DIR)
 online_course_list_cache: list[OnlineCourse] = []
-is_random: bool = True  # True: random / False: popular
 
 
 def display_an_empty_slot(window: webview.Window, idx: int):
@@ -33,7 +34,7 @@ def decrypt_and_display_a_course(window: webview.Window, course: list[int, SLOT_
     course_file_path: Path = Path(save_dir / Path(f'course_data_{str(course[0]).rjust(3, "0")}.bcd'))
     if course_file_path.exists():
         encrypted_course = EncryptedCourse()
-        encrypted_course.load(open(course_file_path, 'rb').read())
+        encrypted_course.load(course_file_path.open('rb').read())
         encrypted_course.decrypt()
         decrypted_course = DecryptedCourse()
         decrypted_course.load(encrypted_course.data)
@@ -59,7 +60,7 @@ def load_local_courses(window: webview.Window):
     global save_dir
     print('Loading local levels ...')
     encrypted_save = EncryptedSave()
-    encrypted_save.load(open(Path(save_dir / 'save.dat'), 'rb').read())
+    encrypted_save.load(Path(save_dir / 'save.dat').open('rb').read())
     encrypted_save.decrypt()
     decrypted_save = DecryptedSave()
     decrypted_save.load(encrypted_save.data)
@@ -114,10 +115,13 @@ def load_online_popular(window: webview.Window,
 
 
 class Api:
+    def __init__(self):
+        self.is_random: bool = True  # True: random / False: popular
+
     def handle_tab_active(self, tab_id: str):
         global window
         if tab_id in ['e', 'n', 'ex', 'sex']:
-            if is_random:
+            if self.is_random:
                 load_online_random(window, config.TGRCODE_API_COURSE_NUMBER, tab_id)
             else:
                 load_online_popular(window, config.TGRCODE_API_COURSE_NUMBER, tab_id)
@@ -125,9 +129,8 @@ class Api:
             widgets.show_error_message(window, 'Unknown difficulty ID')
 
     def handle_switch_random(self) -> bool:
-        global is_random
-        is_random = not is_random
-        return is_random
+        self.is_random = not self.is_random
+        return self.is_random
 
     def handle_entry_click(self, parent_id: str, entry_idx):
         global window
@@ -142,7 +145,15 @@ class Api:
         webbrowser.open(link)
 
     def handle_download_course_to_slot(self, course_data_id: str, slot_idx: str):
-        pass
+        print(f'Download {course_data_id} to slot #{slot_idx} ...')
+        widgets.show_info_message(window, f'Download {course_data_id} to slot #{slot_idx} ...')
+        output_file = Path(save_dir / Path(f'course_data_{slot_idx.rjust(3, "0")}.bcd'))
+        output_file.rename(Path(save_dir / Path(f'course_data_{slot_idx.rjust(3, "0")}.bcd.bak')))
+        with output_file.open('wb') as file_handle:
+            file_handle.write(tgrcode_api.level_data_dataid(int(course_data_id)))
+        widgets.show_success_message(window, 'Download completed')
+        widgets.clear_local_course(window)
+        load_local_courses(window)
 
 
 def webview_init(window: webview.Window):
