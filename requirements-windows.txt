@@ -1,6 +1,7 @@
 nintendoclients==0.0.3
 pywebview
 requests
-pygobject
 pyclip
-python-rapidjson
+pyqt5
+pyqtwebengine
+qtpy

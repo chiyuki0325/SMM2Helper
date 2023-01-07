@@ -2,7 +2,6 @@
 
 from dataclasses import dataclass
 import requests
-import rapidjson as json
 
 from config import TGRCODE_API, VERSION
 
@@ -150,7 +149,7 @@ def search_multiple_levels(api: str, count: int = 10, difficulty_id: str = 'e') 
         headers={'User-Agent': USER_AGENT}
     )
     try:
-        courses = json.loads(response.text)['courses']
+        courses = response.json()['courses']
     except requests.exceptions.JSONDecodeError:
         raise TGRCodeAPIException(response.text)
     ret: list[Course] = []
@@ -193,7 +192,7 @@ def level_info(course_id: str) -> Course:
             url=f'{TGRCODE_API}/level_info/{normalize_course_id(course_id)}',
             headers={'User-Agent': USER_AGENT}
         )
-        response_json = json.loads(response.text)
+        response_json = response.json()
         if 'error' in response_json:
             raise TGRCodeAPIException(response_json['error'])
         return deserialize_course(response_json)

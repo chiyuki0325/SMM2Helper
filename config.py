@@ -1,3 +1,6 @@
+import sys
+from sys import platform
+
 # SMM2Helper Version
 VERSION: str = '0.1'
 

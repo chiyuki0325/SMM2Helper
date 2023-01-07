@@ -1,11 +1,11 @@
 from webview import Window
 from urllib.parse import quote
+import json
 
 from tgrcode_api import Course as OnlineCourse
 from tgrcode_api import Maker as OnlineMaker
 from tgrcode_api import prettify_course_id
 from config import TGRCODE_API, SHOW_THUMBNAILS, VERSION
-import rapidjson as json
 
 
 def quote_vars(*args):

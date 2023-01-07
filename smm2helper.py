@@ -9,6 +9,7 @@ from SMM2.data import GAME_STYLE_NAMES
 
 from pathlib import Path
 import webbrowser
+import sys
 
 import pyclip
 import webview
@@ -193,4 +194,5 @@ def webview_init(window: webview.Window):
 if __name__ == '__main__':
     api: Api = Api()
     window = webview.create_window(f'SMM2Helper {config.VERSION}', url='web/index.html', js_api=api)
-    webview.start(webview_init, window, gui='gtk', debug=config.DEBUG, http_server=True)
+    webview.start(webview_init, window, gui='edgechromium' if sys.platform == 'win32' else 'gtk',
+                  debug=config.DEBUG, http_server=True)
