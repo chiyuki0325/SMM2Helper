@@ -1,5 +1,5 @@
 # SMM2Helper Version
-VERSION: str = 'development'
+VERSION: str = '0.1'
 
 # SMM2 user save data path
 SAVE_DIR: str = '/home/yidaozhan/.local/share/yuzu/nand/user/save/0000000000000000/692F66FAAD512B74A7B59BA9102A8196/01009B90006DC000'
