@@ -1,9 +1,10 @@
 from webview import Window
 from urllib.parse import quote
+
 from tgrcode_api import Course as OnlineCourse
 from tgrcode_api import Maker as OnlineMaker
 from tgrcode_api import prettify_course_id
-from config import TGRCODE_API, SHOW_THUMBNAILS
+from config import TGRCODE_API, SHOW_THUMBNAILS, VERSION
 import rapidjson as json
 
 
@@ -74,6 +75,7 @@ def show_dialog(window: Window,
 
 
 def show_online_course_details(window: Window, idx: int, course: OnlineCourse):
+    set_subtitle(window, course.name)
     api_root: str = TGRCODE_API if SHOW_THUMBNAILS else ''
     window.evaluate_js(f"showOnlineCourseDetails({idx},"
                        f"decodeURIComponent('{quote(course.name)}'),"
@@ -99,3 +101,7 @@ def show_online_course_details(window: Window, idx: int, course: OnlineCourse):
                        f"'{prettify_course_id(course.record_holder.maker_id)}',"
                        f"'{api_root}/level_thumbnail/{course.course_id}',"
                        f"'{api_root}/level_entire_thumbnail/{course.course_id}');")
+
+
+def set_subtitle(window: Window, title: str | None = None):
+    window.set_title(f'{title} - SMM2Helper {VERSION}' if title else f'SMM2Helper {VERSION}')

@@ -218,6 +218,7 @@ function openLink(link) {
 }
 
 function backToOnlineCourseList() {
+    pywebview.api.handle_set_subtitle();
     const tabs = document.getElementById('tabs');
     tabs.removeAttribute('data-state')
     const onlineCourses = document.getElementById('online-courses');

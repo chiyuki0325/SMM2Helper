@@ -14,6 +14,8 @@ Currently in work-in-progress state, some features are unusable.
 - [x] Course download
 - [x] Course Search
 - [ ] Maker details view
+- [ ] Maker Search
+- [ ] Super World 
 
 ### Denodeization
 No npm or Node.js packages are used in the code of SMM2Helper.

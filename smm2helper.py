@@ -117,6 +117,7 @@ class Api:
     def __init__(self):
         self.is_random: bool = True  # True: random / False: popular
         self.downloading: bool = False
+        self.is_super_world: bool = False  # True: Super World list / False: normal list
 
     def handle_tab_active(self, tab_id: str):
         global window
@@ -176,6 +177,9 @@ class Api:
             return
         widgets.show_online_course_details(window=window, idx=-1, course=course)
 
+    def handle_set_subtitle(self, subtitle: str | None = None):
+        widgets.set_subtitle(window, subtitle)
+
 
 def webview_init(window: webview.Window):
     load_local_courses(window)
@@ -188,5 +192,5 @@ def webview_init(window: webview.Window):
 
 if __name__ == '__main__':
     api: Api = Api()
-    window = webview.create_window('SMM2Helper', url='web/index.html', js_api=api)
+    window = webview.create_window(f'SMM2Helper {config.VERSION}', url='web/index.html', js_api=api)
     webview.start(webview_init, window, gui='gtk', debug=config.DEBUG, http_server=True)
