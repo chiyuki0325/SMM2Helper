@@ -193,6 +193,9 @@ def level_info(course_id: str) -> Course:
             url=f'{TGRCODE_API}/level_info/{normalize_course_id(course_id)}',
             headers={'User-Agent': USER_AGENT}
         )
-        return deserialize_course(json.loads(response.text))
+        response_json = json.loads(response.text)
+        if 'error' in response_json:
+            raise TGRCodeAPIException(response_json['error'])
+        return deserialize_course(response_json)
     except TGRCodeAPIException as ex:  # pass exception
         raise TGRCodeAPIException(ex)

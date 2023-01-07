@@ -38,7 +38,6 @@
                 <div id="ex" class="tab" onclick="activeTab(this)">Expert</div>
                 <div id="sex" class="tab" onclick="activeTab(this)">Super Expert</div>
             </div>
-            &nbsp;&nbsp;
             <div class="tabs">
                 <button type="button"
                         class="fluent-button fluent-button-secondary"
@@ -47,6 +46,12 @@
 Popular: Search courses from popular courses">
                     Random
                 </button>
+            </div>
+            <div class="tabs" style="cursor: pointer" onclick="searchCourse();" title="Search course">
+                <img src="res/ic_fluent_search_20_regular.svg">
+            </div>
+            <div class="tabs" style="cursor: pointer" onclick="searchMaker();" title="Search maker">
+                <img src="res/ic_fluent_people_search_20_regular.svg">
             </div>
         </div>
         <div class="card main-card" id="right-card" style="width: calc(60vw - 2.9rem)"> <!--Avoid ellipsis to overflow-->

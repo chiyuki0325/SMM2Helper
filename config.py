@@ -11,7 +11,7 @@ TGRCODE_API: str = 'https://tgrcode.com/mm2'
 DEBUG: bool = True
 
 # Courses to show per request
-TGRCODE_API_COURSE_NUMBER: int = 15
+TGRCODE_API_COURSE_NUMBER: int = 5
 
 # Show empty slots in local courses
 SHOW_EMPTY_SLOT: bool = False

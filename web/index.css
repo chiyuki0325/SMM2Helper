@@ -32,6 +32,7 @@ body {
 .main-head {
     display: flex;
     height: 35px;
+    gap: 8px;
 }
 
 .main-card {

@@ -147,7 +147,7 @@ class Api:
     def handle_download_course_to_slot(self, course_data_id: str, slot_idx: str):
         self.downloading = True
         print(f'Download {course_data_id} to slot #{slot_idx} ...')
-        widgets.show_info_message(window, f'Download {course_data_id} to slot #{slot_idx} ...')
+        widgets.show_info_message(window, f'Downloading course {course_data_id} to slot #{slot_idx}, please wait ...')
         output_file = Path(save_dir / Path(f'course_data_{slot_idx.rjust(3, "0")}.bcd'))
         backup_file = Path(save_dir / Path(f'course_data_{slot_idx.rjust(3, "0")}.bcd.bak'))
         output_file.rename(backup_file)
@@ -165,6 +165,16 @@ class Api:
         widgets.clear_local_course(window)
         load_local_courses(window)
         self.downloading = False
+
+    def handle_search_course(self, course_id: str):
+        print(f'Search course {course_id}')
+        try:
+            course = tgrcode_api.level_info(course_id)
+        except (Exception, tgrcode_api.TGRCodeAPIBaseException) as ex:
+            widgets.clear_tabs_state(window)
+            widgets.show_error_message(window, str(ex))
+            return
+        widgets.show_online_course_details(window=window, idx=-1, course=course)
 
 
 def webview_init(window: webview.Window):

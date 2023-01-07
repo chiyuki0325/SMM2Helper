@@ -12,7 +12,7 @@ Currently in work-in-progress state, unusable.
 - [x] Browsing online courses from Endless Challenge and popular courses
 - [x] Course details view
 - [x] Course download
-- [ ] Search
+- [x] Course Search
 - [ ] Maker details view
 
 ### Denodeization

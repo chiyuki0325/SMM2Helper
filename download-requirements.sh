@@ -12,7 +12,9 @@ for url in "https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/ass
            "https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Heart/SVG/ic_fluent_heart_20_regular.svg" \
            "https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Heart Broken/SVG/ic_fluent_heart_broken_20_regular.svg" \
            "https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Number Symbol/SVG/ic_fluent_number_symbol_20_regular.svg" \
-           "https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Tag/SVG/ic_fluent_tag_20_regular.svg"
+           "https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Tag/SVG/ic_fluent_tag_20_regular.svg" \
+           "https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Search/SVG/ic_fluent_search_20_regular.svg" \
+           "https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/People Search/SVG/ic_fluent_people_search_20_regular.svg"
 do
   if ! [ -f "$(basename "$url")" ]; then
     wget "$url"

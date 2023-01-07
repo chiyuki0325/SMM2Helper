@@ -70,7 +70,7 @@ def show_dialog(window: Window,
                        f"'{str(no_visible).lower()}',"
                        f"decodeURIComponent('{no_text}'),"
                        f"{dialog_callback_id},"
-                       f"{json.dumps(dialog_callback_object)};")
+                       f"{json.dumps(dialog_callback_object)});")
 
 
 def show_online_course_details(window: Window, idx: int, course: OnlineCourse):

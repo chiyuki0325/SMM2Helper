@@ -87,7 +87,7 @@ function hideMessage(messageId) {
 }
 
 function showErrorMessage(message) {
-    console.error(message);
+    tabs.removeAttribute('data-state');
     showMessage(message, 'error-message');
 }
 
@@ -170,6 +170,8 @@ function showOnlineCourseDetails(idx, name, description, uploaded_date, course_i
                                  difficulty, tag_1, tag_2, world_record, upload_time, clears, attempts, clear_rate,
                                  likes, boos, maker_name, maker_id, record_holder, record_holder_id, small_img_url,
                                  full_img_url) {
+    const tabs = document.getElementById('tabs');
+    tabs.setAttribute('data-state', 'loading');
     const onlineCourses = document.getElementById('online-courses');
     onlineCourses.style.opacity = '0';
     onlineCourses.style.height = '0';
@@ -216,6 +218,8 @@ function openLink(link) {
 }
 
 function backToOnlineCourseList() {
+    const tabs = document.getElementById('tabs');
+    tabs.removeAttribute('data-state')
     const onlineCourses = document.getElementById('online-courses');
     const onlineCourse = document.getElementById('online-course');
     onlineCourse.style.opacity = '0';
@@ -255,7 +259,11 @@ function downloadCourseToSlot() {
 }
 
 function searchCourse() {
-    let course_id;
-    course_id = prompt('Enter course ID:');
-
+    const tabs = document.getElementById('tabs');
+    if (tabs.getAttribute('data-state') === 'loading') {
+        return;
+    }
+    tabs.setAttribute('data-state', 'loading');
+    const course_id = prompt('Enter course ID:');
+    pywebview.api.handle_search_course(course_id);
 }
