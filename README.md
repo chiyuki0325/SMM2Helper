@@ -3,7 +3,7 @@
 [![State-of-the-art Shitcode](https://img.shields.io/static/v1?label=State-of-the-art&message=Shitcode&color=7B5804)](https://github.com/trekhleb/state-of-the-art-shitcode)
 
 A graphical SMM2 course manager and frontend for [TheGreatRambler's SMM2 API](https://github.com/TheGreatRambler/MariOver), supports Windows and Linux.   
-Currently in work-in-progress state, unusable.
+Currently in work-in-progress state, some features are unusable.
 
 ![screenshot](https://imgsrc.baidu.com/super/pic/item/4e4a20a4462309f77dd992d7370e0cf3d6cad645.jpg)
 
