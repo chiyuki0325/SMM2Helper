@@ -5,7 +5,7 @@
 A graphical SMM2 course manager and frontend for [TheGreatRambler's SMM2 API](https://github.com/TheGreatRambler/MariOver), supports Windows and Linux.   
 Currently in work-in-progress state, unusable.
 
-![screenshot](https://imgsrc.baidu.com/super/pic/item/34fae6cd7b899e51dba0c3d007a7d933c9950dcc.jpg)
+![screenshot](https://imgsrc.baidu.com/super/pic/item/4e4a20a4462309f77dd992d7370e0cf3d6cad645.jpg)
 
 ### Status
 - [x] Course listing & browsing
