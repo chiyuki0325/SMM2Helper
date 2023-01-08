@@ -1,5 +1,3 @@
-# Credits: TheGreatRambler for creating and maintaining the API: https://tgrcode.com/posts/mario_maker_2_api
-
 from dataclasses import dataclass
 import requests
 
