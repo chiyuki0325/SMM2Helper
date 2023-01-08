@@ -2,6 +2,22 @@
     padding: 5px;
 }
 
+.details-with-icon::before {
+    top: 4px;
+    position: relative;
+    padding-right: 2px;
+}
+
+.details-multi-root {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+}
+
+.details-gap {
+    width: 4px;
+}
+
 .details-head {
     display: flex;
     gap: 4px;
@@ -27,25 +43,12 @@
     width: calc(calc(60vw - 200px) - 4.2rem);
 }
 
-.details-course-maker-root {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-end;
-    gap: 4px;
-}
-
 .details-course-maker {
     cursor: pointer;
 }
 
-.details-with-icon::before {
-    top: 4px;
-    position: relative;
-}
-
 .details-course-maker::before {
     content: url("/res/ic_fluent_person_20_regular.svg");
-    padding-right: 4px;
 }
 
 .details-course-description {
@@ -56,12 +59,10 @@
 
 .details-course-description::before {
     content: url("/res/ic_fluent_edit_20_regular.svg");
-    padding-right: 4px;
 }
 
 .details-course-upload-time::before {
     content: url("/res/ic_fluent_clock_20_regular.svg");
-    padding-right: 4px;
 }
 
 .details-text-small {
@@ -99,19 +100,10 @@
     display: flex;
     flex-direction: row;
     align-items: flex-end;
-    gap: 4px;
 }
 
 .details-course-difficulty::before {
     content: url("/res/ic_fluent_text_bullet_list_tree_20_regular.svg");
-    padding-right: 4px;
-}
-
-.details-course-rate {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-end;
-    gap: 4px;
 }
 
 .details-course-rate::before {
@@ -120,37 +112,25 @@
 
 .details-course-record-holder::before {
     content: url("/res/ic_fluent_ribbon_star_20_regular.svg");
-    padding-right: 4px;
-}
-
-.details-course-likes-root {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-end;
 }
 
 .details-course-likes::before {
     content: url("/res/ic_fluent_heart_20_regular.svg");
-    padding-right: 4px;
 }
 
 .details-course-boos::before {
     content: url("/res/ic_fluent_heart_broken_20_regular.svg");
-    padding-right: 4px;
 }
 
 .details-course-id::before {
     content: url("/res/ic_fluent_number_symbol_20_regular.svg");
-    padding-right: 4px;
 }
 
 .details-course-tag-1::before {
     content: url("/res/ic_fluent_tag_20_regular.svg");
-    padding-right: 4px;
 }
 .details-course-tag-2::before {
     content: url("/res/ic_fluent_tag_20_regular.svg");
-    padding-right: 4px;
 }
 
 .details-img-full {
@@ -174,4 +154,103 @@
     display: flex;
     flex-direction: row;
     gap: 8px;
+}
+
+
+.details-mii-img {
+    height: 106px;
+    filter: drop-shadow(0 0 1px black);
+}
+
+.details-maker-region::before {
+    content: url("/res/ic_fluent_map_20_regular.svg");
+}
+
+.details-maker-last-active::before {
+    content: url("/res/ic_fluent_phone_screen_time_20_regular.svg");
+}
+
+.details-maker-vs-rank::before {
+    content: url("/res/ic_fluent_text_bullet_list_tree_20_regular.svg");
+}
+
+.details-small-title {
+    display: flex;
+    align-items: flex-end;
+    height: 24px;
+    font-weight: 500;
+}
+
+.details-maker-vs-plays::before {
+    content: url("/res/ic_fluent_games_20_regular.svg");
+}
+
+.details-maker-vs-won::before {
+    content: url("/res/ic_fluent_location_20_regular.svg");
+}
+
+.details-maker-vs-lost::before {
+    content: url("/res/ic_fluent_location_dismiss_20_regular.svg");
+}
+
+.details-maker-vs-disconnected::before {
+    content: url("/res/ic_fluent_wifi_off_20_regular.svg");
+}
+
+.details-maker-vs-kills::before {
+    content: url("/res/ic_fluent_people_team_add_20_regular.svg");
+}
+
+.details-maker-vs-killed-by-others::before {
+    content: url("/res/ic_fluent_people_team_delete_20_regular.svg");
+}
+
+.details-maker-coop-plays::before {
+    content: url("/res/ic_fluent_games_20_regular.svg");
+}
+
+.details-maker-endless-e::before {
+    content: url("/res/ic_fluent_cellular_data_4_20_regular.svg");
+}
+.details-maker-endless-n::before {
+    content: url("/res/ic_fluent_cellular_data_3_20_regular.svg");
+}
+.details-maker-endless-ex::before {
+    content: url("/res/ic_fluent_cellular_data_2_20_regular.svg");
+}
+.details-maker-endless-sex::before {
+    content: url("/res/ic_fluent_cellular_data_1_20_regular.svg");
+}
+
+.details-maker-uploaded-courses::before {
+    content: url("/res/ic_fluent_send_copy_20_regular.svg");
+}
+
+.details-maker-uploaded-courses::before {
+    content: url("/res/ic_fluent_send_copy_20_regular.svg");
+}
+
+.details-maker-points::before {
+    content: url("/res/ic_fluent_book_coins_20_regular.svg");
+}
+
+.details-maker-course-played::before {
+    content: url("/res/ic_fluent_book_number_20_regular.svg");
+}
+
+.details-maker-first-clears::before {
+    content: url("/res/ic_fluent_fast_acceleration_20_regular.svg");
+}
+
+.details-maker-mii-pose::before {
+    content: url("/res/ic_fluent_accessibility_20_regular.svg");
+}
+.details-maker-mii-hat::before {
+    content: url("/res/ic_fluent_hat_graduation_20_regular.svg");
+}
+.details-maker-mii-shirt::before {
+    content: url("/res/ic_fluent_person_20_regular.svg");
+}
+.details-maker-mii-pants::before {
+    content: url("/res/ic_fluent_presenter_20_regular.svg");
 }

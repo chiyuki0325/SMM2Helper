@@ -54,73 +54,189 @@ Popular: Search courses from popular courses">
                 <img src="res/ic_fluent_people_search_20_regular.svg">
             </div>
         </div>
-        <div class="card main-card" id="right-card" style="width: calc(60vw - 2.9rem)"> <!--Avoid ellipsis to overflow-->
-            <ol id="online-courses" class="right-region" style="opacity: 1"></ol>
-            <div id="online-course" class="right-region details-root" style="opacity: 0; height: 0">
+        <div class="card main-card" id="right-card" style="width: calc(60vw - 2.9rem)">
+            <!--Avoid ellipsis to overflow-->
+            <ol id="online-courses" class="right-region" style=""></ol>
+
+
+            <div id="online-course" class="right-region details-root" style="opacity: 0; height: 0; visibility: hidden">
                 <span class="details-head">
                     <img src="" class="details-img-small" alt="Course One-Screen Thumbnail" id="details-img">
                     <span class="details-info">
                         <div class="details-title" id="details-course-title">Title</div>
-                        <div class="details-course-maker-root">
-                            <div class="details-course-maker details-with-icon" id="details-course-maker"
-                                 onclick="showOnlineMakerDetails(this)" title="MakerID">Maker</div>
-                            <div class="details-text-small" id="details-course-maker-time">UploadTime</div>
+                        <div class="details-multi-root details-course-maker details-with-icon">
+                            <div id="details-course-maker"
+                                 onclick="showCurrentCourseMakerDetails()" title="MakerID">Maker</div>
+                            <span class="details-gap"></span>
+                            <div class="details-text-small" id="details-course-maker-time" title="Time spend uploading">UploadTime</div>
                         </div>
                         <div class="details-text-small details-course-upload-time details-with-icon"
-                             id="details-course-upload-time">UploadedDate</div>
+                             id="details-course-upload-time" title="Uploaded date">UploadedDate</div>
                         <div class="details-course-description details-with-icon"
                              id="details-course-description" title="FullDescription">Description</div>
                     </span>
                 </span>
+
                 <span class="details-others">
                     <span class="details-others-left">
                         <div class="details-course-id details-with-icon click-to-copy" id="details-course-id"
                              onclick="copyText(this.innerText)" title="Click to copy">CourseID</div>
                         <div class="details-course-scene details-with-icon">
-                            <div id="details-course-game-style">GameStyle</div>
-                            <div id="details-course-theme-name">Theme</div>
+                            <div id="details-course-game-style" title="Game style">GameStyle</div>
+                            <span class="details-gap"></span>
+                            <div id="details-course-theme-name" title="Theme">Theme</div>
                         </div>
-                        <div class="details-course-difficulty details-with-icon" id="details-course-difficulty">
-                            Difficulty</div>
-                        <div class="details-course-rate details-with-icon">
-                            <div id="details-course-clear-rate">ClearRate</div>
-                            <div id="details-course-clears" class="details-text-small">Clears</div>
+                        <div class="details-course-difficulty details-with-icon" id="details-course-difficulty" title="Difficulty">Difficulty</div>
+                        <div class="details-multi-root details-course-rate details-with-icon">
+                            <div id="details-course-clear-rate" title="Clear Rate">ClearRate</div>
+                            <span class="details-gap"></span>
+                            <div id="details-course-clears" class="details-text-small" title="Clears">Clears</div>
                             <div class="details-text-small">/</div>
-                            <div id="details-course-attempts" class="details-text-small">Attempts</div>
+                            <div id="details-course-attempts" class="details-text-small" title="Attempts">Attempts</div>
                         </div>
                     </span>
+
                     <span class="details-others-right">
-                        <div class="details-course-likes-root">
-                            <div class="details-with-icon details-course-likes" id="details-course-likes">Likes</div>
-                            &nbsp;&nbsp;
-                            <div class="details-with-icon details-course-boos" id="details-course-boos">Boos</div>
+                        <div class="details-multi-root">
+                            <div class="details-with-icon details-course-likes" id="details-course-likes" title="Likes">Likes</div>
+                            <span class="details-gap"></span>
+                            <div class="details-with-icon details-course-boos" id="details-course-boos" title="Boos">Boos</div>
                         </div>
-                        <div class="details-course-maker-root">
-                            <div class="details-course-record-holder details-with-icon"
-                                 id="details-course-record-holder"
-                                 onclick="showOnlineRecordHolderDetails(this)" title="RecordHolderID">
-                                RecordHolder</div>
+                        <div class="details-multi-root details-course-record-holder details-with-icon">
+                            <div id="details-course-record-holder"
+                                 onclick="showOnlineRecordHolderDetails(this)" title="RecordHolderID">RecordHolder</div>
+                            <span class="details-gap"></span>
                             <div class="details-text-small" id="details-course-record-time">WorldRecord</div>
                         </div>
-                        <div class="details-course-tag-1 details-with-icon" id="details-course-tag-1">Tag1</div>
-                        <div class="details-course-tag-2 details-with-icon" id="details-course-tag-2">Tag2</div>
+                        <div class="details-course-tag-1 details-with-icon" id="details-course-tag-1" title="Tag 1">Tag1</div>
+                        <div class="details-course-tag-2 details-with-icon" id="details-course-tag-2" title="Tag 2">Tag2</div>
                     </span>
                 </span>
+
                 <span class="details-img-full-root">
                     <img src="" class="details-img-full" alt="Course Full Thumbnail" id="details-img-full">
                 </span>
+
                 <div class="details-options">
                     <button type="button" class="fluent-button fluent-button-secondary"
-                            onclick="backToOnlineCourseList()">
-                        Back
+                            onclick="backToOnlineCourseList()">Back
                     </button>
                     <button type="button" class="fluent-button fluent-button-primary"
-                            onclick="downloadCourseToSlot()">
-                        Download
+                            onclick="downloadCourseToSlot()">Download
                     </button>
                 </div>
             </div>
-            <div id="online-maker" style="visibility: hidden"></div>
+
+
+            <div id="online-maker" class="right-region details-root" style="opacity: 0; height: 0; visibility: hidden">
+                <span class="details-head">
+                    <img src=""
+                         class="details-mii-img" alt="Mii" id="details-mii-img">
+                    <span class="details-info">
+                        <div class="details-title" id="details-maker-name">Maker Name</div>
+                        <div class="details-course-id details-with-icon click-to-copy"
+                             onclick="copyText(this.innerText)"
+                             id="details-maker-id" title="Click to copy">Maker ID
+                        </div>
+                        <div class="details-maker-region details-multi-root details-with-icon">
+                            <div id="details-maker-region">Region</div>
+                            <span class="details-gap"></span>
+                            <div id="details-maker-country" title="Country / Region">Country</div>
+                        </div>
+                        <div class="details-maker-last-active details-with-icon" id="details-maker-last-active"
+                             title="Last active time">Last Active Time</div>
+                    </span>
+                </span>
+
+                <span class="details-others">
+                    <span class="details-others-left">
+                        <div class="details-small-title">Course Making</div>
+                        <div id="details-maker-uploaded-courses" class="details-maker-uploaded-courses details-with-icon" title="Uploaded courses">Uploaded</div>
+                        <div class="details-multi-root">
+                            <div id="details-maker-likes" class="details-course-likes details-with-icon" title="Got likes">Likes</div>
+                            <span class="details-gap"></span>
+                            <div id="details-maker-points" class="details-maker-points details-with-icon" title="Maker points">Points</div>
+                        </div>
+                        <div style="height: 8px;"></div>
+
+                        <div class="details-small-title">Course Playing</div>
+                        <div class="details-multi-root">
+                        <div id="details-maker-course-played" class="details-maker-course-played details-with-icon" title="Courses played">Played</div>
+                            <span class="details-gap"></span>
+                        <div id="details-maker-course-attempted" class="details-maker-vs-plays details-with-icon" title="Courses attempted">Attempted</div>
+                        </div>
+                        <div class="details-multi-root">
+                            <div id="details-maker-course-cleared" class="details-maker-vs-won details-with-icon" title="Courses cleared">Cleared</div>
+                            <span class="details-gap"></span>
+                            <div id="details-maker-course-deaths" class="details-maker-vs-lost details-with-icon" title="Courses deaths">Deaths</div>
+                        </div>
+                        <div class="details-multi-root">
+                            <div id="details-maker-first-clears" class="details-maker-first-clears details-with-icon" title="First clears">First</div>
+                            <span class="details-gap"></span>
+                            <div id="details-maker-world-records" class="details-course-record-holder details-with-icon" title="World records">Records</div>
+                        </div>
+                        <div id="details-maker-super-world-clears" class="details-maker-region details-with-icon" title="Super World clears">Worlds</div>
+                        <div style="height: 8px;"></div>
+
+                        <div class="details-small-title">Mii Costumes</div>
+                        <div id="details-maker-mii-pose" class="details-maker-mii-pose details-with-icon" title="Pose">Pose</div>
+                        <div id="details-maker-mii-hat" class="details-maker-mii-hat details-with-icon" title="Hat">Hat</div>
+                        <div id="details-maker-mii-shirt" class="details-maker-mii-shirt details-with-icon" title="Shirt">Shirt</div>
+                        <div id="details-maker-mii-pants" class="details-maker-mii-pants details-with-icon" title="Pants">Pants</div>
+                    </span>
+
+                    <span class="details-others-right">
+                        <div class="details-small-title">Endless Challenge</div>
+                        <div class="details-multi-root">
+                            <div id="details-maker-endless-e" class="details-maker-endless-e details-with-icon" title="Easy">Easy</div>
+                            <span class="details-gap"></span>
+                            <div id="details-maker-endless-n" class="details-maker-endless-n details-with-icon" title="Normal">Normal</div>
+                            <span class="details-gap"></span>
+                            <div id="details-maker-endless-ex" class="details-maker-endless-ex details-with-icon" title="Expert">Expert </div>
+                            <span class="details-gap"></span>
+                            <div id="details-maker-endless-sex" class="details-maker-endless-sex details-with-icon" title="Super Expert">S. Expert</div>
+                        </div>
+                        <div style="height: 8px;"></div>
+
+                        <div class="details-small-title">Multiplayer Versus</div>
+                        <div class="details-maker-vs-rank details-multi-root details-with-icon">
+                            <div id="details-maker-vs-rank">Rank</div>
+                            <span class="details-gap"></span>
+                            <div id="details-maker-vs-rating" class="details-text-small">Rating</div>
+                        </div>
+                        <div id="details-maker-vs-plays" class="details-maker-vs-plays details-with-icon" title="Plays">Plays</div>
+                        <div class="details-multi-root">
+                            <div id="details-maker-vs-won" class="details-maker-vs-won details-with-icon" title="Won">Won</div>
+                            <span class="details-gap"></span>
+                            <div id="details-maker-vs-lost" class="details-maker-vs-lost details-with-icon" title="Lost">Lost</div>
+                            <span class="details-gap"></span>
+                            <div id="details-maker-vs-disconnected" class="details-maker-vs-disconnected details-with-icon" title="Disconnected">Disconnected</div>
+                        </div>
+                        <div class="details-multi-root">
+                            <div id="details-maker-vs-kills" class="details-maker-vs-kills details-with-icon" title="Kills">Kills</div>
+                            <span class="details-gap"></span>
+                            <div id="details-maker-vs-killed-by-others" class="details-maker-vs-killed-by-others details-with-icon" title="Killed by others">Got Killed</div>
+                        </div>
+                        <div style="height: 8px;"></div>
+
+                        <div class="details-small-title">Multiplayer Co-op</div>
+                        <div class="details-multi-root">
+                            <div id="details-maker-coop-plays" class="details-maker-coop-plays details-with-icon" title="Plays">Plays</div>
+                            <span class="details-gap"></span>
+                            <div id="details-maker-coop-won" class="details-maker-vs-won details-with-icon" title="Won">Won</div>
+                        </div>
+                    </span>
+                </span>
+
+                <div class="details-options">
+                    <button type="button" class="fluent-button fluent-button-secondary"
+                            onclick="backFromMakerDetails()">Back
+                    </button>
+                    <button type="button" class="fluent-button fluent-button-primary"
+                            onclick="showMakerCourses()">Show Courses
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 </div>

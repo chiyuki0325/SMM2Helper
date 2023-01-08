@@ -6,3 +6,4 @@ release-windows-x64
 SMM2Helper**
 WindowsLauncher/SMM2Helper.exe
 WindowsLauncher/SMM2HelperLauncher.vbw
+__pycache__

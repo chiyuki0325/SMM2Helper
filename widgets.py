@@ -86,8 +86,7 @@ def show_online_course_details(window: Window, idx: int, course: OnlineCourse):
                        f"'{course.game_style}',"
                        f"'{course.theme.split(' ')[0]}',"
                        f"'{course.difficulty}',"
-                       f"'{course.tag_1}',"
-                       f"'{course.tag_2}',"
+                       f"'{course.tag_1}','{course.tag_2}',"
                        f"decodeURIComponent('{quote(course.world_record)}'),"
                        f"'{course.upload_time}',"
                        f"'{readable_number(course.clears)}',"
@@ -101,6 +100,27 @@ def show_online_course_details(window: Window, idx: int, course: OnlineCourse):
                        f"'{prettify_course_id(course.record_holder.maker_id)}',"
                        f"'{api_root}/level_thumbnail/{course.course_id}',"
                        f"'{api_root}/level_entire_thumbnail/{course.course_id}');")
+
+
+def show_online_maker_details(window: Window, maker: OnlineMaker):
+    set_subtitle(window, maker.name)
+    window.evaluate_js("showOnlineMakerDetails("
+                       f"decodeURIComponent('{quote(maker.name)}'),"
+                       f"decodeURIComponent('{quote(maker.region)}'),"
+                       f"'{prettify_course_id(maker.maker_id)}',"
+                       f"decodeURIComponent('{quote(maker.country)}'),"
+                       f"decodeURIComponent('{quote(maker.last_active)}'),"
+                       f"decodeURIComponent('{quote(maker.mii_image_url)}'),"
+                       f"'{maker.pose_name}','{maker.hat_name}','{maker.shirt_name}','{maker.pants_name}',"
+                       f"{maker.courses_played},{maker.courses_attempted},{maker.courses_cleared},"
+                       f"{maker.courses_deaths},{maker.likes},{maker.maker_points},"
+                       f"{maker.easy_highscore},{maker.normal_highscore},{maker.expert_highscore},"
+                       f"{maker.super_expert_highscore},"
+                       f"{maker.versus_rating},'{maker.versus_rank}',{maker.versus_plays},"
+                       f"{maker.versus_won},{maker.versus_lost},{maker.versus_disconnected},"
+                       f"{maker.coop_clears},{maker.coop_plays},{maker.versus_kills},{maker.versus_killed_by_others},"
+                       f"{maker.uploaded_levels},{maker.first_clears},{maker.world_records},{maker.super_world_clears},"
+                       f"'{maker.super_world_id}');")
 
 
 def set_subtitle(window: Window, title: str | None = None):

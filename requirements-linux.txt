@@ -1,4 +1,5 @@
 nintendoclients==0.0.3
+pycryptodome
 pywebview
 requests
 pygobject

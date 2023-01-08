@@ -118,7 +118,10 @@ class Api:
     def __init__(self):
         self.is_random: bool = True  # True: random / False: popular
         self.downloading: bool = False
+        self.is_maker_search: bool = False  # True: back to list / False: back to course details
         self.is_super_world: bool = False  # True: Super World list / False: normal list
+        self.cached_course_name: str | None = None  # Cached course's name
+        self.cached_maker: OnlineMaker | None = None  # Cached maker
 
     def handle_tab_active(self, tab_id: str):
         global window
@@ -138,7 +141,10 @@ class Api:
         global window
         entry_idx = int(entry_idx)
         if parent_id == 'online-courses':
-            widgets.show_online_course_details(window=window, idx=entry_idx, course=online_course_list_cache[entry_idx])
+            course: OnlineCourse = online_course_list_cache[entry_idx]
+            self.cached_course_name = course.name
+            self.cached_maker = course.maker
+            widgets.show_online_course_details(window=window, idx=entry_idx, course=course)
 
     def handle_copy_text(self, text_to_copy: str):
         pyclip.copy(text_to_copy)
@@ -176,10 +182,15 @@ class Api:
             widgets.clear_tabs_state(window)
             widgets.show_error_message(window, str(ex))
             return
+        self.cached_course_name = course.name
+        self.cached_maker = course.maker
         widgets.show_online_course_details(window=window, idx=-1, course=course)
 
     def handle_set_subtitle(self, subtitle: str | None = None):
         widgets.set_subtitle(window, subtitle)
+
+    def handle_course_maker_details(self):
+        widgets.show_online_maker_details(window, self.cached_maker)
 
 
 def webview_init(window: webview.Window):

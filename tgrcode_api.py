@@ -22,14 +22,19 @@ class TGRCodeAPICourseIDException(TGRCodeAPIBaseException):
 
 @dataclass
 class Maker:
+    name: str
     region: str
     maker_id: str
-    name: str
     country: str
     last_active: str
     mii_image_url: str
+    pose_name: str
+    hat_name: str
+    shirt_name: str
+    pants_name: str
     courses_played: int
-    courses_cleared: int  # cleared + deaths = attempted
+    courses_attempted: int
+    courses_cleared: int
     courses_deaths: int
     likes: int
     maker_points: int
@@ -39,7 +44,8 @@ class Maker:
     super_expert_highscore: int
     versus_rating: int
     versus_rank: str
-    versus_won: int  # won + lost = plays
+    versus_plays: int
+    versus_won: int
     versus_lost: int
     versus_disconnected: int
     coop_clears: int
@@ -47,7 +53,9 @@ class Maker:
     versus_kills: int
     versus_killed_by_others: int
     uploaded_levels: int
-    last_uploaded_level: str
+    first_clears: int
+    world_records: int
+    super_world_clears: int
     super_world_id: str
 
 
@@ -119,6 +127,11 @@ def deserialize_maker(maker: dict) -> Maker:
         country=maker['country'],
         last_active=maker['last_active_pretty'],
         mii_image_url=maker['mii_image'],
+        pose_name=maker['pose_name'],
+        hat_name=maker['hat_name'],
+        shirt_name=maker['shirt_name'],
+        pants_name=maker['pants_name'],
+        courses_attempted=maker['courses_attempted'],
         courses_played=maker['courses_played'],
         courses_cleared=maker['courses_cleared'],
         courses_deaths=maker['courses_deaths'],
@@ -135,10 +148,13 @@ def deserialize_maker(maker: dict) -> Maker:
         versus_disconnected=maker['versus_disconnected'],
         coop_clears=maker['coop_clears'],
         coop_plays=maker['coop_plays'],
+        versus_plays=maker['versus_plays'],
         versus_kills=maker['versus_kills'],
         versus_killed_by_others=maker['versus_killed_by_others'],
         uploaded_levels=maker['uploaded_levels'],
-        last_uploaded_level=maker['last_uploaded_level_pretty'],
+        first_clears=maker['first_clears'],
+        world_records=maker['world_records'],
+        super_world_clears=maker['unique_super_world_clears'],
         super_world_id=maker['super_world_id']
     )
 
