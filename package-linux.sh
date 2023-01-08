@@ -8,7 +8,9 @@ function msg() {
     echo -e "\033[1;34m::\033[1;0m ${1}\033[0m"
 }
 
-msg "Packaging for Linux release..."
+VERSION="$(python -c 'import config; print(config.VERSION, end="")')"
+
+msg "Packaging for Linux release ${VERSION}..."
 
 msg "Preparing files..."
 ./download-requirements.sh
@@ -35,7 +37,7 @@ cp smm2helper-linux.sh "${RELEASE_DIR}/smm2helper"
 
 msg "Creating final package..."
 pushd "$RELEASE_DIR"
-tar -czvf ../SMM2Helper-linux.tar.gz *
+tar -czvf "../SMM2Helper-${VERSION}-linux.tar.gz" *
 popd
 
 rm -rf "$RELEASE_DIR"
