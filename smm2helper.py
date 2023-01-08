@@ -60,6 +60,14 @@ def load_local_courses(window: webview.Window):
     global save_dir
     print('Loading local levels ...')
     encrypted_save = EncryptedSave()
+    if not Path(save_dir).exists():
+        widgets.insert_my_course(window, 'SMM2 save data directory not found',
+                                 'Please set SAVE_DIR in config.py first.', 0)
+        return
+    if not Path(save_dir / 'save.dat').exists():
+        widgets.insert_my_course(window, 'SMM2 save data not found',
+                                 'Please check if SAVE_DIR in config.py is a valid SMM2 save data.', 0)
+        return
     encrypted_save.load(Path(save_dir / 'save.dat').open('rb').read())
     encrypted_save.decrypt()
     decrypted_save = DecryptedSave()

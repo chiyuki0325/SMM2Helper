@@ -59,7 +59,7 @@ Popular: Search courses from popular courses">
             <ol id="online-courses" class="right-region" style=""></ol>
 
 
-            <div id="online-course" class="right-region details-root" style="opacity: 0; height: 0; visibility: hidden">
+            <div id="online-course" class="right-region details-root" style="opacity: 0; height: 0; display: none">
                 <span class="details-head">
                     <img src="" class="details-img-small" alt="Course One-Screen Thumbnail" id="details-img">
                     <span class="details-info">
@@ -128,7 +128,7 @@ Popular: Search courses from popular courses">
             </div>
 
 
-            <div id="online-maker" class="right-region details-root" style="opacity: 0; height: 0; visibility: hidden">
+            <div id="online-maker" class="right-region details-root" style="opacity: 0; height: 0; display: none">
                 <span class="details-head">
                     <img src=""
                          class="details-mii-img" alt="Mii" id="details-mii-img">
@@ -231,6 +231,9 @@ Popular: Search courses from popular courses">
                 <div class="details-options">
                     <button type="button" class="fluent-button fluent-button-secondary"
                             onclick="backFromMakerDetails()">Back
+                    </button>
+                    <button type="button" class="fluent-button fluent-button-secondary" id="details-super-world-button"
+                            onclick="showMakerSuperWorld()">Super World
                     </button>
                     <button type="button" class="fluent-button fluent-button-primary"
                             onclick="showMakerCourses()">Show Courses

@@ -127,7 +127,7 @@ function fillInnerText(id, content) {
 }
 
 function showDialog(title, content, yes_visible, yes_text, no_visible, no_text, dialog_callback_id, dialog_callback_object) {
-    document.getElementById('dialog-bg').style.visibility = 'visible';
+    document.getElementById('dialog-bg').style.display = null;
     document.getElementById('dialog-box').style.opacity = '1';
     fillInnerText('dialog-title', title);
     fillInnerText('dialog-content', content);
@@ -137,22 +137,22 @@ function showDialog(title, content, yes_visible, yes_text, no_visible, no_text, 
     const button_no = document.getElementById('dialog-button-no');
     button_no.setAttribute('onclick', onclick_function)
     if (yes_visible) {
-        button_yes.style.visibility = 'visible';
+        button_yes.style.display = null;
         button_yes.innerText = yes_text;
     } else {
-        button_yes.style.visibility = 'hidden';
+        button_yes.style.display = 'none';
     }
     if (no_visible) {
-        button_no.style.visibility = 'visible';
+        button_no.style.display = null;
         button_no.innerText = no_text;
     } else {
-        button_no.style.visibility = 'hidden';
+        button_no.style.display = 'none';
     }
 }
 
 function dialogButtonCallback(value, dialog_callback_id, dialog_callback_object) {
     const callback = JSON.parse(decodeURIComponent(dialog_callback_object))
-    document.getElementById('dialog-bg').style.visibility = 'hidden';
+    document.getElementById('dialog-bg').style.display = 'none';
     document.getElementById('dialog-box').style.opacity = '0';
     switch (dialog_callback_id) {
         case 'download-course':
@@ -178,7 +178,7 @@ function showOnlineCourseDetails(idx, name, description, uploaded_date, course_i
     onlineCourses.style.opacity = '0';
     onlineCourses.style.height = '0';
     setTimeout(() => {
-        onlineCourses.style.visibility = 'hidden';
+        onlineCourses.style.display = 'none';
     }, 200);
     const onlineCourse = document.getElementById('online-course');
     onlineCourse.setAttribute('data-idx', idx);
@@ -206,8 +206,9 @@ function showOnlineCourseDetails(idx, name, description, uploaded_date, course_i
     fillInnerText('details-course-tag-2', tag_2);
     document.getElementById('details-img').setAttribute('src', small_img_url);
     document.getElementById('details-img-full').setAttribute('src', full_img_url);
-    onlineCourse.style.visibility = 'visible';
-    onlineCourse.style.height = '';
+    onlineCourse.style.display = null;
+    onlineCourse.style.height = null;
+    onlineCourse.style.padding = null;
     onlineCourse.style.opacity = '1';
 }
 
@@ -227,12 +228,15 @@ function backToOnlineCourseList() {
     const onlineCourse = document.getElementById('online-course');
     onlineCourse.style.opacity = '0';
     onlineCourse.style.height = '0';
+    onlineCourse.style.padding = '0';
     setTimeout(() => {
-        onlineCourse.style.visibility = 'hidden';
+        onlineCourse.style.display = 'none';
+        onlineCourses.style.height = null;
+        onlineCourses.style.opacity = '1';
+        setTimeout(() => {
+            onlineCourses.style.display = null;
+        }, 200)
     }, 200);
-    onlineCourses.style.visibility = 'visible';
-    onlineCourses.style.height = '';
-    onlineCourses.style.opacity = '1';
 }
 
 function downloadCourseToSlot() {
@@ -285,13 +289,14 @@ function showOnlineMakerDetails(name, region, maker_id, country, last_active, mi
     onlineCourses.style.opacity = '0';
     onlineCourses.style.height = '0';
     setTimeout(() => {
-        onlineCourses.style.visibility = 'hidden';
+        onlineCourses.style.display = 'none';
     }, 200);
     const onlineCourse = document.getElementById('online-course');
     onlineCourse.style.opacity = '0';
     onlineCourse.style.height = '0';
+    onlineCourse.style.padding = '0';
     setTimeout(() => {
-        onlineCourse.style.visibility = 'hidden';
+        onlineCourse.style.display = 'none';
     }, 200);
     document.getElementById('details-mii-img').setAttribute('src', '');
     const onlineMaker = document.getElementById('online-maker');
@@ -330,8 +335,15 @@ function showOnlineMakerDetails(name, region, maker_id, country, last_active, mi
     fillInnerText('details-maker-coop-plays', coop_plays);
     fillInnerText('details-maker-coop-won', coop_clears);
     document.getElementById('details-mii-img').setAttribute('src', mii_image_url);
-    onlineMaker.style.visibility = 'visible';
-    onlineMaker.style.height = '';
+    const superWorldButton = document.getElementById('details-super-world-button');
+    if (super_world_id !== '') {
+        superWorldButton.style.display = null;
+    } else {
+        superWorldButton.style.display = 'none';
+    }
+    onlineMaker.style.display = null;
+    onlineMaker.style.height = null;
+    onlineMaker.style.padding = null;
     onlineMaker.style.opacity = '1';
 }
 
@@ -344,22 +356,24 @@ function backFromMakerDetails() {
     const onlineMaker = document.getElementById('online-maker');
     onlineMaker.style.opacity = '0';
     onlineMaker.style.height = '0';
+    onlineMaker.style.padding = '0';
     setTimeout(() => {
-        onlineMaker.style.visibility = 'hidden';
+        onlineMaker.style.display = 'none';
     }, 200);
     if (pywebview.api.is_maker_search) {
         pywebview.api.handle_set_subtitle();  // TODO
         const tabs = document.getElementById('tabs');
         tabs.removeAttribute('data-state')
         const onlineCourses = document.getElementById('online-courses');
-        onlineCourses.style.visibility = 'visible';
-        onlineCourses.style.height = '';
+        onlineCourses.style.display = null;
+        onlineCourses.style.height = null;
         onlineCourses.style.opacity = '1';
     } else {
         pywebview.api.handle_set_subtitle(pywebview.api.cached_course_name);
         const onlineCourse = document.getElementById('online-course');
-        onlineCourse.style.visibility = 'visible';
-        onlineCourse.style.height = '';
+        onlineCourse.style.display = null;
+        onlineCourse.style.height = null;
+        onlineCourse.style.padding = null;
         onlineCourse.style.opacity = '1';
     }
     document.getElementById('right-card').scrollTop = 0;

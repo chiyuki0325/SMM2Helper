@@ -1,6 +1,3 @@
-import sys
-from sys import platform
-
 # SMM2Helper Version
 VERSION: str = '0.1.1'
 
@@ -14,7 +11,7 @@ TGRCODE_API: str = 'https://tgrcode.com/mm2'
 DEBUG: bool = True
 
 # Courses to show per request
-TGRCODE_API_COURSE_NUMBER: int = 5
+TGRCODE_API_COURSE_NUMBER: int = 30
 
 # Show empty slots in local courses
 SHOW_EMPTY_SLOT: bool = False
