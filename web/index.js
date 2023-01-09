@@ -270,10 +270,12 @@ function searchCourse() {
     if (tabs.getAttribute('data-state') === 'loading') {
         return;
     }
-    tabs.setAttribute('data-state', 'loading');
     const course_id = prompt('Enter course ID:');
-    showInfoMessage("Searching course...")
-    pywebview.api.handle_search_course(course_id);
+    if (course_id) {
+        tabs.setAttribute('data-state', 'loading');
+        showInfoMessage("Searching course...")
+        pywebview.api.handle_search_course(course_id);
+    }
 }
 
 
@@ -360,21 +362,36 @@ function backFromMakerDetails() {
     setTimeout(() => {
         onlineMaker.style.display = 'none';
     }, 200);
-    if (pywebview.api.is_maker_search) {
-        pywebview.api.handle_set_subtitle();  // TODO
-        const tabs = document.getElementById('tabs');
-        tabs.removeAttribute('data-state')
-        const onlineCourses = document.getElementById('online-courses');
-        onlineCourses.style.display = null;
-        onlineCourses.style.height = null;
-        onlineCourses.style.opacity = '1';
-    } else {
-        pywebview.api.handle_set_subtitle(pywebview.api.cached_course_name);
-        const onlineCourse = document.getElementById('online-course');
-        onlineCourse.style.display = null;
-        onlineCourse.style.height = null;
-        onlineCourse.style.padding = null;
-        onlineCourse.style.opacity = '1';
+    pywebview.api.get_is_maker_search().then((is_maker_search) => {
+        if (is_maker_search) {
+            pywebview.api.handle_set_subtitle();  // TODO
+            const tabs = document.getElementById('tabs');
+            tabs.removeAttribute('data-state')
+            const onlineCourses = document.getElementById('online-courses');
+            onlineCourses.style.display = null;
+            onlineCourses.style.height = null;
+            onlineCourses.style.opacity = '1';
+        } else {
+            pywebview.api.get_cached_course_name().then(pywebview.api.handle_set_subtitle)
+            const onlineCourse = document.getElementById('online-course');
+            onlineCourse.style.display = null;
+            onlineCourse.style.height = null;
+            onlineCourse.style.padding = null;
+            onlineCourse.style.opacity = '1';
+        }
+        document.getElementById('right-card').scrollTop = 0;
+    })
+}
+
+function searchMaker() {
+    const tabs = document.getElementById('tabs');
+    if (tabs.getAttribute('data-state') === 'loading') {
+        return;
     }
-    document.getElementById('right-card').scrollTop = 0;
+    const maker_id = prompt('Enter maker ID:');
+    if (maker_id) {
+        tabs.setAttribute('data-state', 'loading');
+        showInfoMessage("Searching maker...")
+        pywebview.api.handle_search_maker(maker_id);
+    }
 }

@@ -185,7 +185,7 @@ class Api:
     def handle_search_course(self, course_id: str):
         print(f'Search course {course_id}')
         try:
-            course = tgrcode_api.level_info(course_id)
+            course: OnlineCourse = tgrcode_api.level_info(course_id)
         except (Exception, tgrcode_api.TGRCodeAPIBaseException) as ex:
             widgets.clear_tabs_state(window)
             widgets.show_error_message(window, str(ex))
@@ -199,6 +199,24 @@ class Api:
 
     def handle_course_maker_details(self):
         widgets.show_online_maker_details(window, self.cached_maker)
+
+    def handle_search_maker(self, maker_id: str):
+        print(f'Search maker {maker_id}')
+        try:
+            maker: OnlineMaker = tgrcode_api.user_info(maker_id)
+        except (Exception, tgrcode_api.TGRCodeAPIBaseException) as ex:
+            widgets.clear_tabs_state(window)
+            widgets.show_error_message(window, str(ex))
+            return
+        self.cached_maker = maker
+        self.is_maker_search = True
+        widgets.show_online_maker_details(window=window, maker=maker)
+
+    def get_cached_course_name(self) -> str:
+        return self.cached_course_name
+
+    def get_is_maker_search(self) -> bool:
+        return self.is_maker_search
 
 
 def webview_init(window: webview.Window):

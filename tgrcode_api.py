@@ -5,6 +5,12 @@ from config import TGRCODE_API, VERSION
 
 USER_AGENT = f'SMM2Helper/{VERSION} HiddenSuperStar/0.0.4'
 
+__all__ = ['TGRCodeAPIBaseException', 'TGRCodeAPIException', 'TGRCodeAPICourseIDException',
+           'Maker', 'Course',
+           'prettify_course_id', 'normalize_course_id',
+           'search_popular', 'search_endless_mode',
+           'user_info', 'level_info', 'level_data_dataid']
+
 
 class TGRCodeAPIBaseException(BaseException):
     pass
@@ -81,6 +87,7 @@ class Course:
 
 
 def prettify_course_id(course_id: str) -> str:
+    course_id = course_id.strip()
     return f'{course_id[0:3]}-{course_id[3:6]}-{course_id[6:9]}'.upper()
 
 
@@ -210,5 +217,19 @@ def level_info(course_id: str) -> Course:
         if 'error' in response_json:
             raise TGRCodeAPIException(response_json['error'])
         return deserialize_course(response_json)
+    except TGRCodeAPIException as ex:  # pass exception
+        raise TGRCodeAPIException(ex)
+
+
+def user_info(maker_id: str) -> Maker:
+    try:
+        response = requests.get(
+            url=f'{TGRCODE_API}/user_info/{normalize_course_id(maker_id)}',
+            headers={'User-Agent': USER_AGENT}
+        )
+        response_json = response.json()
+        if 'error' in response_json:
+            raise TGRCodeAPIException(response_json['error'])
+        return deserialize_maker(response_json)
     except TGRCodeAPIException as ex:  # pass exception
         raise TGRCodeAPIException(ex)
