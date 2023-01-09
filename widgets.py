@@ -5,11 +5,7 @@ import json
 from tgrcode_api import Course as OnlineCourse
 from tgrcode_api import Maker as OnlineMaker
 from tgrcode_api import prettify_course_id
-from config import TGRCODE_API, SHOW_THUMBNAILS, VERSION
-
-
-def quote_vars(*args):
-    return map(quote, args)
+from config import TGRCODE_API, SHOW_THUMBNAILS, VERSION, DEBUG
 
 
 def readable_number(number: int) -> str:
@@ -19,28 +15,42 @@ def readable_number(number: int) -> str:
         return f'{number // 1000}k'
 
 
+def evaluate_js(window: Window, function_name: str, args: list | None = None):
+    args_str: str = ''
+    if args:
+        for arg in args:
+            match arg:
+                case int():
+                    args_str += str(arg)
+                case str():
+                    args_str += f"decodeURIComponent('{quote(arg)}')"
+                case bool():
+                    args_str += 'true' if arg else 'false'
+                case _:
+                    args_str += str(arg)
+            args_str += ', '
+    evaluate_str = f'{function_name}({args_str.strip(", ")});'
+    if DEBUG:
+        print(evaluate_str)
+    window.evaluate_js(evaluate_str)
+
+
 # ----
 
 def insert_my_course(window: Window, course_title: str, course_desc: str, idx: int):
-    course_title, course_desc = quote_vars(course_title, course_desc)
-    window.evaluate_js(f"insertMyCourse(decodeURIComponent('{course_title}'),"
-                       f"decodeURIComponent('{course_desc}'),"
-                       f"{idx});")
+    evaluate_js(window, 'insertMyCourse', [course_title, course_desc, idx])
 
 
 def insert_online_course(window: Window, course_title: str, course_desc: str, idx: int):
-    course_title, course_desc = quote_vars(course_title, course_desc)
-    window.evaluate_js(f"insertOnlineCourse(decodeURIComponent('{course_title}'),"
-                       f"decodeURIComponent('{course_desc}'),"
-                       f"{idx});")
+    evaluate_js(window, 'insertOnlineCourse', [course_title, course_desc, idx])
 
 
 def clear_local_course(window: Window):
-    window.evaluate_js("clearLocalCourse();")
+    evaluate_js(window, 'clearLocalCourse')
 
 
 def clear_online_course(window: Window):
-    window.evaluate_js("clearOnlineCourse();")
+    evaluate_js(window, 'clearOnlineCourse')
 
 
 def clear_tabs_state(window: Window):
@@ -48,79 +58,52 @@ def clear_tabs_state(window: Window):
 
 
 def show_error_message(window: Window, message: str):
-    window.evaluate_js(f"showErrorMessage('{message}')")
+    evaluate_js(window, 'showErrorMessage', [message])
 
 
 def show_success_message(window: Window, message: str):
-    window.evaluate_js(f"showSuccessMessage('{message}')")
+    evaluate_js(window, 'showSuccessMessage', [message])
 
 
 def show_info_message(window: Window, message: str):
-    window.evaluate_js(f"showInfoMessage('{message}')")
+    evaluate_js(window, 'showInfoMessage', [message])
 
 
 def show_dialog(window: Window,
                 title: str, content: str, yes_visible: bool = True,
                 yes_text: str = "Yes", no_visible: bool = True, no_text: str = "No",
-                dialog_callback_id: str = 'default', dialog_callback_object: dict = {}):
-    title, content, yes_text, no_text = quote_vars(title, content, yes_text, no_text)
-    window.evaluate_js(f"showDialog(decodeURIComponent('{title}'),"
-                       f"decodeURIComponent('{content}'),"
-                       f"'{str(yes_visible).lower()}',"
-                       f"decodeURIComponent('{yes_text}'),"
-                       f"'{str(no_visible).lower()}',"
-                       f"decodeURIComponent('{no_text}'),"
-                       f"{dialog_callback_id},"
-                       f"{json.dumps(dialog_callback_object)});")
+                dialog_callback_id: str = 'default', dialog_callback_object: dict | None = None):
+    evaluate_js(window, 'showDialog', [
+        title, content, str(yes_visible).lower(), yes_text, str(no_visible).lower(),
+        no_text, dialog_callback_id, json.dumps(dialog_callback_object)
+    ])
 
 
 def show_online_course_details(window: Window, idx: int, course: OnlineCourse):
-    set_subtitle(window, course.name)
     api_root: str = TGRCODE_API if SHOW_THUMBNAILS else ''
-    window.evaluate_js(f"showOnlineCourseDetails({idx},"
-                       f"decodeURIComponent('{quote(course.name)}'),"
-                       f"decodeURIComponent('{quote(course.description)}'),"
-                       f"decodeURIComponent('{quote(course.uploaded_date)}'),"
-                       f"'{prettify_course_id(course.course_id)}',"
-                       f"{course.data_id},"
-                       f"'{course.game_style}',"
-                       f"'{course.theme.split(' ')[0]}',"
-                       f"'{course.difficulty}',"
-                       f"'{course.tag_1}','{course.tag_2}',"
-                       f"decodeURIComponent('{quote(course.world_record)}'),"
-                       f"'{course.upload_time}',"
-                       f"'{readable_number(course.clears)}',"
-                       f"'{readable_number(course.attempts)}',"
-                       f"'{course.clear_rate}',"
-                       f"'{readable_number(course.likes)}',"
-                       f"'{readable_number(course.boos)}',"
-                       f"decodeURIComponent('{quote(course.maker.name)}'),"
-                       f"'{prettify_course_id(course.maker.maker_id)}',"
-                       f"decodeURIComponent('{quote(course.record_holder.name)}'),"
-                       f"'{prettify_course_id(course.record_holder.maker_id)}',"
-                       f"'{api_root}/level_thumbnail/{course.course_id}',"
-                       f"'{api_root}/level_entire_thumbnail/{course.course_id}');")
+    evaluate_js(window, 'showOnlineCourseDetails', [
+        idx, course.name, course.description, course.uploaded_date, prettify_course_id(course.course_id),
+        course.data_id, course.game_style, course.theme.split(' ')[0], course.difficulty, course.tag_1, course.tag_2,
+        course.world_record, course.upload_time, readable_number(course.clears), readable_number(course.attempts),
+        course.clear_rate, readable_number(course.likes), readable_number(course.boos),
+        course.maker.name, prettify_course_id(course.maker.maker_id),
+        course.record_holder.name, prettify_course_id(course.record_holder.maker_id),
+        f'{api_root}/level_thumbnail/{course.course_id}',
+        f'{api_root}/level_entire_thumbnail/{course.course_id}'
+    ])
 
 
 def show_online_maker_details(window: Window, maker: OnlineMaker):
-    set_subtitle(window, maker.name)
-    window.evaluate_js("showOnlineMakerDetails("
-                       f"decodeURIComponent('{quote(maker.name)}'),"
-                       f"decodeURIComponent('{quote(maker.region)}'),"
-                       f"'{prettify_course_id(maker.maker_id)}',"
-                       f"decodeURIComponent('{quote(maker.country)}'),"
-                       f"decodeURIComponent('{quote(maker.last_active)}'),"
-                       f"decodeURIComponent('{quote(maker.mii_image_url)}'),"
-                       f"'{maker.pose_name}','{maker.hat_name}','{maker.shirt_name}','{maker.pants_name}',"
-                       f"{maker.courses_played},{maker.courses_attempted},{maker.courses_cleared},"
-                       f"{maker.courses_deaths},{maker.likes},{maker.maker_points},"
-                       f"{maker.easy_highscore},{maker.normal_highscore},{maker.expert_highscore},"
-                       f"{maker.super_expert_highscore},"
-                       f"{maker.versus_rating},'{maker.versus_rank}',{maker.versus_plays},"
-                       f"{maker.versus_won},{maker.versus_lost},{maker.versus_disconnected},"
-                       f"{maker.coop_clears},{maker.coop_plays},{maker.versus_kills},{maker.versus_killed_by_others},"
-                       f"{maker.uploaded_levels},{maker.first_clears},{maker.world_records},{maker.super_world_clears},"
-                       f"'{maker.super_world_id}');")
+    evaluate_js(window, 'showOnlineMakerDetails', [
+        maker.name, maker.region, prettify_course_id(maker.maker_id), maker.country, maker.last_active,
+        maker.mii_image_url, maker.pose_name, maker.hat_name, maker.shirt_name, maker.pants_name,
+        maker.courses_played, maker.courses_attempted, maker.courses_cleared, maker.courses_deaths, maker.likes,
+        maker.maker_points, maker.easy_highscore, maker.normal_highscore, maker.expert_highscore,
+        maker.super_expert_highscore, maker.versus_rating, maker.versus_rank, maker.versus_plays,
+        maker.versus_won, maker.versus_lost, maker.versus_disconnected, maker.coop_clears, maker.coop_plays,
+        maker.versus_kills, maker.versus_killed_by_others, maker.uploaded_levels, maker.first_clears,
+        maker.world_records, maker.super_world_clears, maker.super_world_id
+    ])
 
 
 def set_subtitle(window: Window, title: str | None = None):

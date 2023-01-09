@@ -104,7 +104,7 @@ Popular: Search courses from popular courses">
                         </div>
                         <div class="details-multi-root details-course-record-holder details-with-icon">
                             <div id="details-course-record-holder"
-                                 onclick="showOnlineRecordHolderDetails(this)" title="RecordHolderID">RecordHolder</div>
+                                 onclick="showCurrentRecordHolderDetails()" title="RecordHolderID" style="cursor: pointer">RecordHolder</div>
                             <span class="details-gap"></span>
                             <div class="details-text-small" id="details-course-record-time">WorldRecord</div>
                         </div>
@@ -233,7 +233,7 @@ Popular: Search courses from popular courses">
                             onclick="backFromMakerDetails()">Back
                     </button>
                     <button type="button" class="fluent-button fluent-button-secondary" id="details-super-world-button"
-                            onclick="showMakerSuperWorld()">Super World
+                            onclick="loadCurrentSuperWorld()">Super World
                     </button>
                     <button type="button" class="fluent-button fluent-button-primary"
                             onclick="showMakerCourses()">Show Courses

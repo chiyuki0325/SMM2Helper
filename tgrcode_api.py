@@ -165,10 +165,13 @@ def deserialize_maker(maker: dict) -> Maker:
 
 
 def search_multiple_levels(api: str, count: int = 10, difficulty_id: str = 'e') -> list[Course]:
-    response = requests.get(
-        url=f'{TGRCODE_API}/{api}?difficulty={difficulty_id}&count={count}',
-        headers={'User-Agent': USER_AGENT}
-    )
+    try:
+        response = requests.get(
+            url=f'{TGRCODE_API}/{api}?difficulty={difficulty_id}&count={count}',
+            headers={'User-Agent': USER_AGENT}
+        )
+    except ConnectionError as ex:
+        raise TGRCodeAPIException(ex)
     try:
         courses = response.json()['courses']
     except requests.exceptions.JSONDecodeError:
@@ -217,7 +220,7 @@ def level_info(course_id: str) -> Course:
         if 'error' in response_json:
             raise TGRCodeAPIException(response_json['error'])
         return deserialize_course(response_json)
-    except TGRCodeAPIException as ex:  # pass exception
+    except (TGRCodeAPIException, ConnectionError) as ex:  # pass exception
         raise TGRCodeAPIException(ex)
 
 
@@ -231,5 +234,20 @@ def user_info(maker_id: str) -> Maker:
         if 'error' in response_json:
             raise TGRCodeAPIException(response_json['error'])
         return deserialize_maker(response_json)
-    except TGRCodeAPIException as ex:  # pass exception
+    except (TGRCodeAPIException, ConnectionError) as ex:  # pass exception
         raise TGRCodeAPIException(ex)
+
+
+def super_world(super_world_id: str) -> list[Course]:
+    response = requests.get(
+        url=f'{TGRCODE_API}/super_world/{super_world_id}',
+        headers={'User-Agent': USER_AGENT}
+    )
+    try:
+        courses = response.json()['courses']
+    except requests.exceptions.JSONDecodeError:
+        raise TGRCodeAPIException(response.text)
+    ret: list[Course] = []
+    for course in courses:
+        ret.append(deserialize_course(course))
+    return ret

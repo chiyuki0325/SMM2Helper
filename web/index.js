@@ -170,46 +170,52 @@ function showOnlineCourseDetails(idx, name, description, uploaded_date, course_i
                                  difficulty, tag_1, tag_2, world_record, upload_time, clears, attempts, clear_rate,
                                  likes, boos, maker_name, maker_id, record_holder, record_holder_id, small_img_url,
                                  full_img_url) {
-    document.getElementById('details-img').setAttribute('src', '');
-    document.getElementById('details-img-full').setAttribute('src', '');
-    const tabs = document.getElementById('tabs');
-    tabs.setAttribute('data-state', 'loading');
-    const onlineCourses = document.getElementById('online-courses');
-    onlineCourses.style.opacity = '0';
-    onlineCourses.style.height = '0';
-    setTimeout(() => {
-        onlineCourses.style.display = 'none';
-    }, 200);
-    const onlineCourse = document.getElementById('online-course');
-    onlineCourse.setAttribute('data-idx', idx);
-    onlineCourse.setAttribute('data-data-id', data_id);
-    fillInnerText('details-course-title', name);
-    fillInnerText('details-course-description', description);
-    document.getElementById('details-course-description').setAttribute('title', description);
-    fillInnerText('details-course-maker', maker_name);
-    document.getElementById('details-course-maker').setAttribute('title', maker_id);
-    fillInnerText('details-course-maker-time', upload_time);
-    fillInnerText('details-course-upload-time', uploaded_date);
-    fillInnerText('details-course-id', course_id);
-    fillInnerText('details-course-game-style', game_style);
-    fillInnerText('details-course-theme-name', theme);
-    fillInnerText('details-course-difficulty', difficulty);
-    fillInnerText('details-course-clear-rate', clear_rate);
-    fillInnerText('details-course-clears', clears);
-    fillInnerText('details-course-attempts', attempts);
-    fillInnerText('details-course-likes', likes);
-    fillInnerText('details-course-boos', boos);
-    fillInnerText('details-course-record-holder', record_holder);
-    document.getElementById('details-course-record-holder').setAttribute('title', record_holder_id);
-    fillInnerText('details-course-record-time', world_record);
-    fillInnerText('details-course-tag-1', tag_1);
-    fillInnerText('details-course-tag-2', tag_2);
-    document.getElementById('details-img').setAttribute('src', small_img_url);
-    document.getElementById('details-img-full').setAttribute('src', full_img_url);
-    onlineCourse.style.display = null;
-    onlineCourse.style.height = null;
-    onlineCourse.style.padding = null;
-    onlineCourse.style.opacity = '1';
+    pywebview.api.handle_set_subtitle(name).then(
+        () => {
+            document.getElementById('details-img').setAttribute('src', '');
+            document.getElementById('details-img-full').setAttribute('src', '');
+            const tabs = document.getElementById('tabs');
+            tabs.setAttribute('data-state', 'loading');
+            const onlineCourses = document.getElementById('online-courses');
+            onlineCourses.style.opacity = '0';
+            onlineCourses.style.height = '0';
+            setTimeout(() => {
+                onlineCourses.style.display = 'none';
+            }, 200);
+            const onlineCourse = document.getElementById('online-course');
+            onlineCourse.setAttribute('data-idx', idx);
+            onlineCourse.setAttribute('data-data-id', data_id);
+            fillInnerText('details-course-title', name);
+            fillInnerText('details-course-description', description);
+            document.getElementById('details-course-description').setAttribute('title', description);
+            fillInnerText('details-course-maker', maker_name);
+            document.getElementById('details-course-maker').setAttribute('title', maker_id);
+            fillInnerText('details-course-maker-time', upload_time);
+            fillInnerText('details-course-upload-time', uploaded_date);
+            fillInnerText('details-course-id', course_id);
+            fillInnerText('details-course-game-style', game_style);
+            fillInnerText('details-course-theme-name', theme);
+            fillInnerText('details-course-difficulty', difficulty);
+            fillInnerText('details-course-clear-rate', clear_rate);
+            fillInnerText('details-course-clears', clears);
+            fillInnerText('details-course-attempts', attempts);
+            fillInnerText('details-course-likes', likes);
+            fillInnerText('details-course-boos', boos);
+            fillInnerText('details-course-record-holder', record_holder);
+            document.getElementById('details-course-record-holder').setAttribute('title', record_holder_id);
+            fillInnerText('details-course-record-time', world_record);
+            fillInnerText('details-course-tag-1', tag_1);
+            fillInnerText('details-course-tag-2', tag_2);
+            document.getElementById('details-img').setAttribute('src', small_img_url);
+            document.getElementById('details-img-full').setAttribute('src', full_img_url);
+            setTimeout(() => {
+                onlineCourse.style.display = null;
+                onlineCourse.style.height = null;
+                onlineCourse.style.padding = null;
+                onlineCourse.style.opacity = '1';
+            }, 200);
+        }
+    )
 }
 
 function copyText(text) {
@@ -221,22 +227,31 @@ function openLink(link) {
 }
 
 function backToOnlineCourseList() {
-    pywebview.api.handle_set_subtitle();
-    const tabs = document.getElementById('tabs');
-    tabs.removeAttribute('data-state')
-    const onlineCourses = document.getElementById('online-courses');
-    const onlineCourse = document.getElementById('online-course');
-    onlineCourse.style.opacity = '0';
-    onlineCourse.style.height = '0';
-    onlineCourse.style.padding = '0';
-    setTimeout(() => {
-        onlineCourse.style.display = 'none';
-        onlineCourses.style.height = null;
-        onlineCourses.style.opacity = '1';
-        setTimeout(() => {
+    pywebview.api.get_is_super_world().then((is_super_world) => {
+        if (is_super_world) {
+            pywebview.api.get_cached_maker_name().then((maker_name) =>
+                pywebview.api.handle_set_subtitle(`Super ${maker_name} World`)
+            )
+        } else {
+            pywebview.api.handle_set_subtitle()
+        }
+    }).then(
+        () => {
+            const tabs = document.getElementById('tabs');
+            tabs.removeAttribute('data-state')
+            const onlineCourses = document.getElementById('online-courses');
+            const onlineCourse = document.getElementById('online-course');
+            onlineCourse.style.opacity = '0';
+            onlineCourse.style.height = '0';
             onlineCourses.style.display = null;
-        }, 200)
-    }, 200);
+            setTimeout(() => {
+                onlineCourse.style.display = 'none';
+                onlineCourses.style.height = null;
+                onlineCourses.style.opacity = '1';
+                onlineCourse.style.padding = '0';
+            }, 200);
+        }
+    )
 }
 
 function downloadCourseToSlot() {
@@ -285,102 +300,115 @@ function showOnlineMakerDetails(name, region, maker_id, country, last_active, mi
                                 super_expert_highscore, versus_rating, versus_rank, versus_plays, versus_won, versus_lost,
                                 versus_disconnected, coop_clears, coop_plays, versus_kills, versus_killed_by_others,
                                 uploaded_levels, first_clears, world_records, super_world_clears, super_world_id) {
-    const tabs = document.getElementById('tabs');
-    tabs.setAttribute('data-state', 'loading');
-    const onlineCourses = document.getElementById('online-courses');
-    onlineCourses.style.opacity = '0';
-    onlineCourses.style.height = '0';
-    setTimeout(() => {
-        onlineCourses.style.display = 'none';
-    }, 200);
-    const onlineCourse = document.getElementById('online-course');
-    onlineCourse.style.opacity = '0';
-    onlineCourse.style.height = '0';
-    onlineCourse.style.padding = '0';
-    setTimeout(() => {
-        onlineCourse.style.display = 'none';
-    }, 200);
-    document.getElementById('details-mii-img').setAttribute('src', '');
-    const onlineMaker = document.getElementById('online-maker');
-    onlineMaker.setAttribute('data-super-world-id', super_world_id);
-    fillInnerText('details-maker-name', name);
-    fillInnerText('details-maker-id', maker_id);
-    fillInnerText('details-maker-region', region);
-    fillInnerText('details-maker-country', country);
-    fillInnerText('details-maker-last-active', last_active);
-    fillInnerText('details-maker-uploaded-courses', uploaded_levels);
-    fillInnerText('details-maker-likes', likes);
-    fillInnerText('details-maker-points', maker_points);
-    fillInnerText('details-maker-course-played', courses_played);
-    fillInnerText('details-maker-course-attempted', courses_attempted);
-    fillInnerText('details-maker-course-cleared', courses_cleared);
-    fillInnerText('details-maker-course-deaths', courses_deaths);
-    fillInnerText('details-maker-first-clears', first_clears);
-    fillInnerText('details-maker-world-records', world_records);
-    fillInnerText('details-maker-super-world-clears', super_world_clears);
-    fillInnerText('details-maker-mii-pose', pose_name);
-    fillInnerText('details-maker-mii-hat', hat_name);
-    fillInnerText('details-maker-mii-shirt', shirt_name);
-    fillInnerText('details-maker-mii-pants', pants_name);
-    fillInnerText('details-maker-endless-e', easy_highscore);
-    fillInnerText('details-maker-endless-n', normal_highscore);
-    fillInnerText('details-maker-endless-ex', expert_highscore);
-    fillInnerText('details-maker-endless-sex', super_expert_highscore);
-    fillInnerText('details-maker-vs-rank', versus_rank);
-    fillInnerText('details-maker-vs-rating', versus_rating);
-    fillInnerText('details-maker-vs-plays', versus_plays);
-    fillInnerText('details-maker-vs-won', versus_won);
-    fillInnerText('details-maker-vs-lost', versus_lost);
-    fillInnerText('details-maker-vs-disconnected', versus_disconnected);
-    fillInnerText('details-maker-vs-kills', versus_kills);
-    fillInnerText('details-maker-vs-killed-by-others', versus_killed_by_others);
-    fillInnerText('details-maker-coop-plays', coop_plays);
-    fillInnerText('details-maker-coop-won', coop_clears);
-    document.getElementById('details-mii-img').setAttribute('src', mii_image_url);
-    const superWorldButton = document.getElementById('details-super-world-button');
-    if (super_world_id !== '') {
-        superWorldButton.style.display = null;
-    } else {
-        superWorldButton.style.display = 'none';
-    }
-    onlineMaker.style.display = null;
-    onlineMaker.style.height = null;
-    onlineMaker.style.padding = null;
-    onlineMaker.style.opacity = '1';
+    pywebview.api.handle_set_subtitle(name).then(
+        () => {
+            const tabs = document.getElementById('tabs');
+            tabs.setAttribute('data-state', 'loading');
+            const onlineCourses = document.getElementById('online-courses');
+            onlineCourses.style.opacity = '0';
+            onlineCourses.style.height = '0';
+            setTimeout(() => {
+                onlineCourses.style.display = 'none';
+            }, 200);
+            const onlineCourse = document.getElementById('online-course');
+            onlineCourse.style.opacity = '0';
+            onlineCourse.style.height = '0';
+            setTimeout(() => {
+                onlineCourse.style.display = 'none';
+                onlineCourse.style.padding = '0';
+            }, 200);
+            document.getElementById('details-mii-img').setAttribute('src', '');
+            const onlineMaker = document.getElementById('online-maker');
+            onlineMaker.setAttribute('data-super-world-id', super_world_id);
+            fillInnerText('details-maker-name', name);
+            fillInnerText('details-maker-id', maker_id);
+            fillInnerText('details-maker-region', region);
+            fillInnerText('details-maker-country', country);
+            fillInnerText('details-maker-last-active', last_active);
+            fillInnerText('details-maker-uploaded-courses', uploaded_levels);
+            fillInnerText('details-maker-likes', likes);
+            fillInnerText('details-maker-points', maker_points);
+            fillInnerText('details-maker-course-played', courses_played);
+            fillInnerText('details-maker-course-attempted', courses_attempted);
+            fillInnerText('details-maker-course-cleared', courses_cleared);
+            fillInnerText('details-maker-course-deaths', courses_deaths);
+            fillInnerText('details-maker-first-clears', first_clears);
+            fillInnerText('details-maker-world-records', world_records);
+            fillInnerText('details-maker-super-world-clears', super_world_clears);
+            fillInnerText('details-maker-mii-pose', pose_name);
+            fillInnerText('details-maker-mii-hat', hat_name);
+            fillInnerText('details-maker-mii-shirt', shirt_name);
+            fillInnerText('details-maker-mii-pants', pants_name);
+            fillInnerText('details-maker-endless-e', easy_highscore);
+            fillInnerText('details-maker-endless-n', normal_highscore);
+            fillInnerText('details-maker-endless-ex', expert_highscore);
+            fillInnerText('details-maker-endless-sex', super_expert_highscore);
+            fillInnerText('details-maker-vs-rank', versus_rank);
+            fillInnerText('details-maker-vs-rating', versus_rating);
+            fillInnerText('details-maker-vs-plays', versus_plays);
+            fillInnerText('details-maker-vs-won', versus_won);
+            fillInnerText('details-maker-vs-lost', versus_lost);
+            fillInnerText('details-maker-vs-disconnected', versus_disconnected);
+            fillInnerText('details-maker-vs-kills', versus_kills);
+            fillInnerText('details-maker-vs-killed-by-others', versus_killed_by_others);
+            fillInnerText('details-maker-coop-plays', coop_plays);
+            fillInnerText('details-maker-coop-won', coop_clears);
+            document.getElementById('details-mii-img').setAttribute('src', mii_image_url);
+            const superWorldButton = document.getElementById('details-super-world-button');
+            if (super_world_id !== '') {
+                superWorldButton.style.display = null;
+            } else {
+                superWorldButton.style.display = 'none';
+            }
+            onlineMaker.style.padding = null;
+            setTimeout(() => {
+                onlineMaker.style.display = null;
+                onlineMaker.style.height = null;
+                onlineMaker.style.opacity = '1';
+            }, 200);
+        }
+    )
 }
 
 function showCurrentCourseMakerDetails() {   // show maker details of displaying course
-    pywebview.api.is_maker_search = false;
+    pywebview.api.set_is_maker_search(false);
     pywebview.api.handle_course_maker_details();
+}
+
+function showCurrentRecordHolderDetails() {   // show record holder details of displaying course
+    pywebview.api.set_is_maker_search(false);
+    pywebview.api.handle_course_record_holder_details();
 }
 
 function backFromMakerDetails() {
     const onlineMaker = document.getElementById('online-maker');
     onlineMaker.style.opacity = '0';
     onlineMaker.style.height = '0';
-    onlineMaker.style.padding = '0';
     setTimeout(() => {
         onlineMaker.style.display = 'none';
+        onlineMaker.style.padding = '0';
+        pywebview.api.get_is_maker_search().then((is_maker_search) => {
+            if (is_maker_search) {
+                // back to online courses list
+                pywebview.api.handle_set_subtitle();
+                const tabs = document.getElementById('tabs');
+                tabs.removeAttribute('data-state')
+                const onlineCourses = document.getElementById('online-courses');
+                onlineCourses.style.display = null;
+                onlineCourses.style.height = null;
+                onlineCourses.style.opacity = '1';
+            } else {
+                // back to online course details
+                pywebview.api.get_cached_course_name().then(pywebview.api.handle_set_subtitle)
+                const onlineCourse = document.getElementById('online-course');
+                onlineCourse.style.display = null;
+                onlineCourse.style.height = null;
+                onlineCourse.style.padding = null;
+                onlineCourse.style.opacity = '1';
+            }
+            document.getElementById('right-card').scrollTop = 0;
+        })
     }, 200);
-    pywebview.api.get_is_maker_search().then((is_maker_search) => {
-        if (is_maker_search) {
-            pywebview.api.handle_set_subtitle();  // TODO
-            const tabs = document.getElementById('tabs');
-            tabs.removeAttribute('data-state')
-            const onlineCourses = document.getElementById('online-courses');
-            onlineCourses.style.display = null;
-            onlineCourses.style.height = null;
-            onlineCourses.style.opacity = '1';
-        } else {
-            pywebview.api.get_cached_course_name().then(pywebview.api.handle_set_subtitle)
-            const onlineCourse = document.getElementById('online-course');
-            onlineCourse.style.display = null;
-            onlineCourse.style.height = null;
-            onlineCourse.style.padding = null;
-            onlineCourse.style.opacity = '1';
-        }
-        document.getElementById('right-card').scrollTop = 0;
-    })
 }
 
 function searchMaker() {
@@ -394,4 +422,32 @@ function searchMaker() {
         showInfoMessage("Searching maker...")
         pywebview.api.handle_search_maker(maker_id);
     }
+}
+
+function loadCurrentSuperWorld() {
+    // hide online maker and show online courses
+    const onlineMaker = document.getElementById('online-maker');
+    onlineMaker.style.opacity = '0';
+    onlineMaker.style.height = '0';
+    onlineMaker.style.padding = '0';
+    setTimeout(() => {
+        onlineMaker.style.display = 'none';
+    }, 200);
+    pywebview.api.handle_set_subtitle();
+    const tabs = document.getElementById('tabs');
+    tabs.removeAttribute('data-state')
+    const onlineCourses = document.getElementById('online-courses');
+    setTimeout(() => {
+        onlineCourses.style.display = null;
+        onlineCourses.style.height = null;
+        onlineCourses.style.opacity = '1';
+    }, 200);
+    document.getElementById('right-card').scrollTop = 0;
+    pywebview.api.handle_set_subtitle(`Super ${document.getElementById('details-maker-name').innerText} World`).then(
+        () => {
+            pywebview.api.handle_load_super_world(
+                document.getElementById('online-maker').getAttribute('data-super-world-id')
+            )
+        }
+    )
 }

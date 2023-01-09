@@ -127,9 +127,11 @@ class Api:
         self.is_random: bool = True  # True: random / False: popular
         self.downloading: bool = False
         self.is_maker_search: bool = False  # True: back to list / False: back to course details
-        self.is_super_world: bool = False  # True: Super World list / False: normal list
         self.cached_course_name: str | None = None  # Cached course's name
         self.cached_maker: OnlineMaker | None = None  # Cached maker
+        self.cached_record_holder: OnlineMaker | None = None  # Cached record holder
+        self.is_super_world: bool = False  # True: Super World list / False: normal list
+        self.cached_maker_name: str | None = None
 
     def handle_tab_active(self, tab_id: str):
         global window
@@ -142,6 +144,7 @@ class Api:
             widgets.show_error_message(window, 'Unknown difficulty ID')
 
     def handle_switch_random(self) -> bool:
+        self.is_super_world = False
         self.is_random = not self.is_random
         return self.is_random
 
@@ -152,6 +155,7 @@ class Api:
             course: OnlineCourse = online_course_list_cache[entry_idx]
             self.cached_course_name = course.name
             self.cached_maker = course.maker
+            self.cached_record_holder = course.record_holder
             widgets.show_online_course_details(window=window, idx=entry_idx, course=course)
 
     def handle_copy_text(self, text_to_copy: str):
@@ -161,6 +165,7 @@ class Api:
         webbrowser.open(link)
 
     def handle_download_course_to_slot(self, course_data_id: str, slot_idx: str):
+        global window
         self.downloading = True
         print(f'Download {course_data_id} to slot #{slot_idx} ...')
         widgets.show_info_message(window, f'Downloading course {course_data_id} to slot #{slot_idx}, please wait ...')
@@ -183,6 +188,7 @@ class Api:
         self.downloading = False
 
     def handle_search_course(self, course_id: str):
+        global window
         print(f'Search course {course_id}')
         try:
             course: OnlineCourse = tgrcode_api.level_info(course_id)
@@ -192,15 +198,23 @@ class Api:
             return
         self.cached_course_name = course.name
         self.cached_maker = course.maker
+        self.cached_record_holder = course.record_holder
         widgets.show_online_course_details(window=window, idx=-1, course=course)
 
     def handle_set_subtitle(self, subtitle: str | None = None):
+        global window
         widgets.set_subtitle(window, subtitle)
 
     def handle_course_maker_details(self):
+        global window
         widgets.show_online_maker_details(window, self.cached_maker)
 
+    def handle_course_record_holder_details(self):
+        global window
+        widgets.show_online_maker_details(window, self.cached_record_holder)
+
     def handle_search_maker(self, maker_id: str):
+        global window
         print(f'Search maker {maker_id}')
         try:
             maker: OnlineMaker = tgrcode_api.user_info(maker_id)
@@ -212,11 +226,44 @@ class Api:
         self.is_maker_search = True
         widgets.show_online_maker_details(window=window, maker=maker)
 
+    def handle_load_super_world(self, super_world_id: str):
+        global window
+        global online_course_list_cache
+        self.is_maker_search = False
+        self.is_super_world = True
+        self.cached_maker_name = self.cached_maker.name
+        print(f'Loading Super World {super_world_id} by {self.cached_maker.name}...')
+        widgets.clear_online_course(window)
+        widgets.insert_online_course(window, 'Loading ...', 'Please wait.', 0)
+        try:
+            courses: list[OnlineCourse] = tgrcode_api.super_world(super_world_id)
+            widgets.clear_online_course(window)
+            online_course_list_cache = courses
+            for idx in range(0, len(courses)):
+                course = courses[idx]
+                widgets.insert_online_course(window, course.name,
+                                             f'{course.game_style} | '
+                                             f'{course.maker.name} | '
+                                             f'{tgrcode_api.prettify_course_id(course.course_id)}',
+                                             idx)
+        except tgrcode_api.TGRCodeAPIBaseException as ex:
+            widgets.show_error_message(window, str(ex))
+
     def get_cached_course_name(self) -> str:
         return self.cached_course_name
 
+    def get_cached_maker_name(self) -> str:
+        return self.cached_maker_name
+
+    def set_is_maker_search(self, is_maker_search) -> bool:
+        self.is_maker_search = is_maker_search
+        return is_maker_search
+
     def get_is_maker_search(self) -> bool:
         return self.is_maker_search
+
+    def get_is_super_world(self) -> bool:
+        return self.is_super_world
 
 
 def webview_init(window: webview.Window):
