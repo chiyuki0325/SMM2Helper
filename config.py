@@ -21,4 +21,4 @@ LOAD_ONLINE_ON_START: bool = False
 
 # Show thumbnails
 # Set to False to make it less likely to trigger rate limit
-SHOW_THUMBNAILS: bool = True
+SHOW_THUMBNAILS: bool = False

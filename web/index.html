@@ -61,7 +61,7 @@ Popular: Search courses from popular courses">
 
             <div id="online-course" class="right-region details-root" style="opacity: 0; height: 0; display: none">
                 <span class="details-head">
-                    <img src="" class="details-img-small" alt="Course One-Screen Thumbnail" id="details-img">
+                    <img src="" class="details-img-small" alt="Course One-Screen Thumbnail" id="details-img" onclick="loadThisThumbnail(this)" style="cursor: pointer">
                     <span class="details-info">
                         <div class="details-title" id="details-course-title">Title</div>
                         <div class="details-multi-root details-course-maker details-with-icon">
@@ -114,7 +114,7 @@ Popular: Search courses from popular courses">
                 </span>
 
                 <span class="details-img-full-root">
-                    <img src="" class="details-img-full" alt="Course Full Thumbnail" id="details-img-full">
+                    <img src="" class="details-img-full" alt="Course Full Thumbnail" id="details-img-full" onclick="loadThisThumbnail(this)" style="cursor: pointer">
                 </span>
 
                 <div class="details-options">
@@ -236,7 +236,7 @@ Popular: Search courses from popular courses">
                             onclick="loadCurrentSuperWorld()">Super World
                     </button>
                     <button type="button" class="fluent-button fluent-button-primary"
-                            onclick="showMakerCourses()">Show Courses
+                            onclick="showCurrentMakerCourses()">Show Courses
                     </button>
                 </div>
             </div>

@@ -227,10 +227,10 @@ function openLink(link) {
 }
 
 function backToOnlineCourseList() {
-    pywebview.api.get_is_super_world().then((is_super_world) => {
-        if (is_super_world) {
+    pywebview.api.get_is_maker_courses().then((is_maker_courses) => {
+        if (is_maker_courses) {
             pywebview.api.get_cached_maker_name().then((maker_name) =>
-                pywebview.api.handle_set_subtitle(`Super ${maker_name} World`)
+                pywebview.api.handle_set_subtitle(`${maker_name}'s courses`)
             )
         } else {
             pywebview.api.handle_set_subtitle()
@@ -450,4 +450,14 @@ function loadCurrentSuperWorld() {
             )
         }
     )
+}
+
+function loadThisThumbnail(obj) {
+    pywebview.api.get_tgrcode_api().then((tgrcode_api) => {
+        obj.setAttribute('style', null);
+        const src = obj.getAttribute('src');
+        if (!src.startsWith(tgrcode_api)) {
+            obj.setAttribute('src', tgrcode_api + src);
+        }
+    })
 }

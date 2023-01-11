@@ -130,7 +130,7 @@ class Api:
         self.cached_course_name: str | None = None  # Cached course's name
         self.cached_maker: OnlineMaker | None = None  # Cached maker
         self.cached_record_holder: OnlineMaker | None = None  # Cached record holder
-        self.is_super_world: bool = False  # True: Super World list / False: normal list
+        self.is_maker_courses: bool = False  # True: Super Maker World / Maker's courses / False: normal list
         self.cached_maker_name: str | None = None
 
     def handle_tab_active(self, tab_id: str):
@@ -144,7 +144,7 @@ class Api:
             widgets.show_error_message(window, 'Unknown difficulty ID')
 
     def handle_switch_random(self) -> bool:
-        self.is_super_world = False
+        self.is_maker_courses = False
         self.is_random = not self.is_random
         return self.is_random
 
@@ -230,7 +230,7 @@ class Api:
         global window
         global online_course_list_cache
         self.is_maker_search = False
-        self.is_super_world = True
+        self.is_maker_courses = True
         self.cached_maker_name = self.cached_maker.name
         print(f'Loading Super World {super_world_id} by {self.cached_maker.name}...')
         widgets.clear_online_course(window)
@@ -262,8 +262,11 @@ class Api:
     def get_is_maker_search(self) -> bool:
         return self.is_maker_search
 
-    def get_is_super_world(self) -> bool:
-        return self.is_super_world
+    def get_is_maker_courses(self) -> bool:
+        return self.is_maker_courses
+
+    def get_tgrcode_api(self) -> str:
+        return config.TGRCODE_API
 
 
 def webview_init(window: webview.Window):
