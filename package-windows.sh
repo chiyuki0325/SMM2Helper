@@ -31,9 +31,9 @@ msg "Applying default settings..."
 sed -i '/SAVE_DIR/c\SAVE_DIR: str = "SMM2 save data directory path"' "${RELEASE_DIR}/config.py"
 sed -i '/DEBUG/c\DEBUG: bool = False' "${RELEASE_DIR}/config.py"
 sed -i '/TGRCODE_API_COURSE_NUMBER/c\TGRCODE_API_COURSE_NUMBER: int = 20' "${RELEASE_DIR}/config.py"
-sed -i '/SHOW_EMPTY_SLOT/c\SHOW_EMPTY_SLOT: bool = True' "${RELEASE_DIR}/config.py"
+sed -i '/SHOW_EMPTY_SLOT/c\SHOW_EMPTY_SLOT: bool = False' "${RELEASE_DIR}/config.py"
 sed -i '/LOAD_ONLINE_ON_START/c\LOAD_ONLINE_ON_START: bool = True' "${RELEASE_DIR}/config.py"
-sed -i '/SHOW_THUMBNAILS/c\SHOW_THUMBNAILS: bool = True' "${RELEASE_DIR}/config.py"
+sed -i '/SHOW_THUMBNAILS/c\SHOW_THUMBNAILS: bool = False' "${RELEASE_DIR}/config.py"
 
 rm -rf "${RELEASE_DIR}/SMM2/__pycache__"
 
