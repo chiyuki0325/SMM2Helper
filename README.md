@@ -9,7 +9,7 @@ for [TheGreatRambler's SMM2 API](https://github.com/TheGreatRambler/MariOver), s
 
 <img src="https://imgsrc.baidu.com/super/pic/item/0bd162d9f2d3572cddcbbf19cf13632763d0c3ce.jpg" alt="Screenshot: course list" width="33%;" /><img src="https://imgsrc.baidu.com/super/pic/item/1ad5ad6eddc451dafce22f2ef3fd5266d11632da.jpg" alt="Screenshot: course details" width="33%;" /><img src="https://imgsrc.baidu.com/super/pic/item/7acb0a46f21fbe098150e0d12e600c338644aded.jpg" alt="Screenshot: maker details" width="33%;" />
 
-### Installation
+### Requirement
 
 SMM2Helper requires Python 3.10+. Please install Python 3.10+ first, and then run `pip3 install -r requirements.txt` to install dependencies of  SMM2Helper.
 
