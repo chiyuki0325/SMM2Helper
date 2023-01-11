@@ -1,5 +1,5 @@
 # SMM2Helper Version
-VERSION: str = '1.0'
+VERSION: str = '1.1'
 
 # SMM2 user save data path
 SAVE_DIR: str = 'SMM2 save data directory path'
