@@ -131,7 +131,7 @@ class Api:
         self.cached_maker: OnlineMaker | None = None  # Cached maker
         self.cached_record_holder: OnlineMaker | None = None  # Cached record holder
         self.is_maker_courses: bool = False  # True: Super Maker World / Maker's courses / False: normal list
-        self.cached_maker_name: str | None = None
+        self.cached_window_title: str | None = None
 
     def handle_tab_active(self, tab_id: str):
         global window
@@ -231,7 +231,7 @@ class Api:
         global online_course_list_cache
         self.is_maker_search = False
         self.is_maker_courses = True
-        self.cached_maker_name = self.cached_maker.name
+        self.cached_window_title = f'Super {self.cached_maker.name} World'
         print(f'Loading Super World {super_world_id} by {self.cached_maker.name}...')
         widgets.clear_online_course(window)
         widgets.insert_online_course(window, 'Loading ...', 'Please wait.', 0)
@@ -249,11 +249,34 @@ class Api:
         except tgrcode_api.TGRCodeAPIBaseException as ex:
             widgets.show_error_message(window, str(ex))
 
+    def handle_load_maker_courses(self, maker_id: str):
+        global window
+        global online_course_list_cache
+        self.is_maker_search = False
+        self.is_maker_courses = True
+        self.cached_window_title = f'{self.cached_maker.name}\'s courses'
+        print(f'Loading {self.cached_window_title} ({maker_id})')
+        widgets.clear_online_course(window)
+        widgets.insert_online_course(window, 'Loading ...', 'Please wait.', 0)
+        try:
+            courses: list[OnlineCourse] = tgrcode_api.get_posted(maker_id)
+            widgets.clear_online_course(window)
+            online_course_list_cache = courses
+            for idx in range(0, len(courses)):
+                course = courses[idx]
+                widgets.insert_online_course(window, course.name,
+                                             f'{course.game_style} | '
+                                             f'{course.maker.name} | '
+                                             f'{tgrcode_api.prettify_course_id(course.course_id)}',
+                                             idx)
+        except tgrcode_api.TGRCodeAPIBaseException as ex:
+            widgets.show_error_message(window, str(ex))
+
     def get_cached_course_name(self) -> str:
         return self.cached_course_name
 
-    def get_cached_maker_name(self) -> str:
-        return self.cached_maker_name
+    def get_cached_window_title(self) -> str:
+        return self.cached_window_title
 
     def set_is_maker_search(self, is_maker_search) -> bool:
         self.is_maker_search = is_maker_search

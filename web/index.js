@@ -229,8 +229,8 @@ function openLink(link) {
 function backToOnlineCourseList() {
     pywebview.api.get_is_maker_courses().then((is_maker_courses) => {
         if (is_maker_courses) {
-            pywebview.api.get_cached_maker_name().then((maker_name) =>
-                pywebview.api.handle_set_subtitle(`${maker_name}'s courses`)
+            pywebview.api.get_cached_window_title().then(
+                pywebview.api.handle_set_subtitle
             )
         } else {
             pywebview.api.handle_set_subtitle()
@@ -429,9 +429,9 @@ function loadCurrentSuperWorld() {
     const onlineMaker = document.getElementById('online-maker');
     onlineMaker.style.opacity = '0';
     onlineMaker.style.height = '0';
-    onlineMaker.style.padding = '0';
     setTimeout(() => {
         onlineMaker.style.display = 'none';
+        onlineMaker.style.padding = '0';
     }, 200);
     pywebview.api.handle_set_subtitle();
     const tabs = document.getElementById('tabs');
@@ -447,6 +447,35 @@ function loadCurrentSuperWorld() {
         () => {
             pywebview.api.handle_load_super_world(
                 document.getElementById('online-maker').getAttribute('data-super-world-id')
+            )
+        }
+    )
+
+}
+
+function loadCurrentMakerCourses() {
+    // hide online maker and show online courses
+    const onlineMaker = document.getElementById('online-maker');
+    onlineMaker.style.opacity = '0';
+    onlineMaker.style.height = '0';
+    setTimeout(() => {
+        onlineMaker.style.display = 'none';
+        onlineMaker.style.padding = '0';
+    }, 200);
+    pywebview.api.handle_set_subtitle();
+    const tabs = document.getElementById('tabs');
+    tabs.removeAttribute('data-state')
+    const onlineCourses = document.getElementById('online-courses');
+    setTimeout(() => {
+        onlineCourses.style.display = null;
+        onlineCourses.style.height = null;
+        onlineCourses.style.opacity = '1';
+    }, 200);
+    document.getElementById('right-card').scrollTop = 0;
+    pywebview.api.handle_set_subtitle(`${document.getElementById('details-maker-name').innerText}'s courses`).then(
+        () => {
+            pywebview.api.handle_load_maker_courses(
+                document.getElementById('details-maker-id').innerText
             )
         }
     )

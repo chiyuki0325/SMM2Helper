@@ -9,7 +9,8 @@ __all__ = ['TGRCodeAPIBaseException', 'TGRCodeAPIException', 'TGRCodeAPICourseID
            'Maker', 'Course',
            'prettify_course_id', 'normalize_course_id',
            'search_popular', 'search_endless_mode',
-           'user_info', 'level_info', 'level_data_dataid']
+           'user_info', 'level_info', 'level_data_dataid',
+           'super_world', 'get_posted']
 
 
 class TGRCodeAPIBaseException(BaseException):
@@ -182,6 +183,21 @@ def search_multiple_levels(api: str, count: int = 10, difficulty_id: str = 'e') 
     return ret
 
 
+def get_multiple_levels(api: str, data_or_maker_id: str) -> list[Course]:
+    response = requests.get(
+        url=f'{TGRCODE_API}/{api}/{data_or_maker_id}',
+        headers={'User-Agent': USER_AGENT}
+    )
+    try:
+        courses = response.json()['courses']
+    except requests.exceptions.JSONDecodeError:
+        raise TGRCodeAPIException(response.text)
+    ret: list[Course] = []
+    for course in courses:
+        ret.append(deserialize_course(course))
+    return ret
+
+
 def search_endless_mode(count: int = 10, difficulty_id: str = 'e') -> list[Course]:
     try:
         return search_multiple_levels('search_endless_mode', count, difficulty_id)
@@ -239,15 +255,14 @@ def user_info(maker_id: str) -> Maker:
 
 
 def super_world(super_world_id: str) -> list[Course]:
-    response = requests.get(
-        url=f'{TGRCODE_API}/super_world/{super_world_id}',
-        headers={'User-Agent': USER_AGENT}
-    )
     try:
-        courses = response.json()['courses']
-    except requests.exceptions.JSONDecodeError:
-        raise TGRCodeAPIException(response.text)
-    ret: list[Course] = []
-    for course in courses:
-        ret.append(deserialize_course(course))
-    return ret
+        return get_multiple_levels('super_world', super_world_id)
+    except TGRCodeAPIException as ex:  # pass exception
+        raise TGRCodeAPIException(ex)
+
+
+def get_posted(maker_id: str) -> list[Course]:
+    try:
+        return get_multiple_levels('get_posted', maker_id)
+    except TGRCodeAPIException as ex:  # pass exception
+        raise TGRCodeAPIException(ex)
