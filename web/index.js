@@ -129,6 +129,7 @@ function fillInnerText(id, content) {
 function showDialog(title, content, yes_visible, yes_text, no_visible, no_text, dialog_callback_id, dialog_callback_object) {
     document.getElementById('dialog-bg').style.display = null;
     document.getElementById('dialog-box').style.opacity = '1';
+    document.getElementById('dialog-box').style.visibility = 'visible';
     fillInnerText('dialog-title', title);
     fillInnerText('dialog-content', content);
     const button_yes = document.getElementById('dialog-button-yes');
@@ -279,10 +280,11 @@ function downloadCourseToSlot() {
         return
     }
     const dataId = document.getElementById('online-course').getAttribute('data-data-id');
+    const courseTitle = document.getElementById('details-course-title').innerText;
     showDialog('Download Course',
-        `Download "${document.getElementById('details-course-title').innerText}" (${document.getElementById('details-course-id').innerText}) ` +
-        `to slot #${idx} and replace "${slotTitle}"？`, true, 'Yes', true, 'No', 'download-course',
-        {'data_id': dataId, 'idx': idx}
+        `Download "${courseTitle}" (${document.getElementById('details-course-id').innerText}) ` +
+        `to slot #${idx} and replace "${slotTitle}"？`, true, 'Yes', true, 'No',
+        'download-course',  {'data_id': dataId, 'idx': idx}
     )
 }
 

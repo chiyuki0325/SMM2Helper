@@ -2,7 +2,7 @@
 
 pkgname=smm2helper-git
 _pkgname=smm2helper
-pkgver=v1.1.r2.gef12fbe
+pkgver=v1.2.r0.g6fad88a
 pkgrel=1
 pkgdesc="SMM2 Course World browser, graphical frontend for TheGreatRambler's SMM2 API"
 license=('MIT')
