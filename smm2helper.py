@@ -291,6 +291,9 @@ class Api:
     def get_tgrcode_api(self) -> str:
         return config.TGRCODE_API
 
+    def get_downloading(self) -> bool:
+        return self.downloading
+
 
 def webview_init(window: webview.Window):
     load_local_courses(window)

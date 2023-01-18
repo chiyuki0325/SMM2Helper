@@ -255,8 +255,14 @@ function backToOnlineCourseList() {
 }
 
 function downloadCourseToSlot() {
-    if (pywebview.api.downloading) {
-        showInfoMessage('Another download is in progress, please wait ...');
+    let is_return = false;
+    pywebview.api.get_downloading().then((downloading) => {
+        if (downloading) {
+            showInfoMessage('Another download is in progress, please wait ...');
+            is_return = true;
+        }
+    })
+    if (is_return) {
         return
     }
     let idx, slotTitle;
