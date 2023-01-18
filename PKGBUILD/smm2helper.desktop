@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Categories=Game;
+Exec=smm2helper %u
+Icon=smm2helper
+Name=SMM2Helper
+Comment=SMM2 Course World browser
+StartupNotify=true
+Terminal=false

@@ -4,6 +4,7 @@ venv
 release-linux
 release-windows-x64
 SMM2Helper**
-WindowsLauncher/SMM2Helper.exe
-WindowsLauncher/SMM2HelperLauncher.vbw
-__pycache__
+WindowsLauncher/
+#WindowsLauncher/SMM2HelperLauncher.vbw
+__pycache__/
+SMM2/__pycache__
