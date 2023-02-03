@@ -4,7 +4,7 @@
   <a href="https://github.com/trekhleb/state-of-the-art-shitcode"></a><img src="https://img.shields.io/static/v1?label=State-of-the-art&message=Shitcode&color=7B5804" alt="State-of-the-art-Shitcode" /></a>
   <a href="https://github.com/YidaozhanYa/SMM2Helper/releases/latest"><img src="https://img.shields.io/github/v/release/YidaozhanYa/SMM2Helper" alt="Latest Release" />
 </div>
-A SMM2 Coures World browser, frontend for [TheGreatRambler's SMM2 API](https://github.com/TheGreatRambler/MariOver), supports Windows and Linux.
+A SMM2 Course World browser, frontend for <a href="https://github.com/TheGreatRambler/MariOver">TheGreatRambler's SMM2 API</a>, supports Windows and Linux.
 
 <img src="https://imgsrc.baidu.com/super/pic/item/5243fbf2b21193136f1f8b7520380cd790238d93.jpg" alt="Screenshot: course list" width="33%;" /><img src="https://imgsrc.baidu.com/super/pic/item/5243fbf2b21193136f1b8b7520380cd790238d9f.jpg" alt="Screenshot: course details" width="33%;" /><img src="https://imgsrc.baidu.com/super/pic/item/c8177f3e6709c93d48a67a32da3df8dcd000549a.jpg" alt="Screenshot: maker details" width="33%;" />
 
