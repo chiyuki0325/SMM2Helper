@@ -62,11 +62,11 @@ def load_local_courses(window: webview.Window):
     encrypted_save = EncryptedSave()
     if not Path(save_dir).exists():
         widgets.insert_my_course(window, 'SMM2 save data directory not found',
-                                 'Please set SAVE_DIR in config.py first.', 0)
+                                 'Please set "save_dir" in config.yml first.', 0)
         return
     if not Path(save_dir / 'save.dat').exists():
         widgets.insert_my_course(window, 'SMM2 save data not found',
-                                 'Please check if SAVE_DIR in config.py is a valid SMM2 save data.', 0)
+                                 'Please check if "save_dir" in config.yml is a valid SMM2 save data.', 0)
         return
     encrypted_save.load(Path(save_dir / 'save.dat').open('rb').read())
     encrypted_save.decrypt()
@@ -79,7 +79,7 @@ def load_local_courses(window: webview.Window):
 
 
 def load_online_random(window: webview.Window,
-                       count: int = config.TGRCODE_API_COURSE_NUMBER,
+                       count: int = config.TGRCODE_API_COURSE_COUNT,
                        difficulty_id: str = 'e'):
     global online_course_list_cache
     print('Loading Endless Challenge ...')
@@ -101,7 +101,7 @@ def load_online_random(window: webview.Window,
 
 
 def load_online_popular(window: webview.Window,
-                        count: int = config.TGRCODE_API_COURSE_NUMBER,
+                        count: int = config.TGRCODE_API_COURSE_COUNT,
                         difficulty_id: str = 'e'):
     global online_course_list_cache
     print('Loading popular levels ...')
@@ -137,9 +137,9 @@ class Api:
         global window
         if tab_id in ['e', 'n', 'ex', 'sex']:
             if self.is_random:
-                load_online_random(window, config.TGRCODE_API_COURSE_NUMBER, tab_id)
+                load_online_random(window, config.TGRCODE_API_COURSE_COUNT, tab_id)
             else:
-                load_online_popular(window, config.TGRCODE_API_COURSE_NUMBER, tab_id)
+                load_online_popular(window, config.TGRCODE_API_COURSE_COUNT, tab_id)
         else:
             widgets.show_error_message(window, 'Unknown difficulty ID')
 

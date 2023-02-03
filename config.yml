@@ -1,0 +1,21 @@
+# SMM2 user save data path
+save_dir: 'SMM2 save data directory path'
+
+# SMM2 API host
+tgrcode_api: 'https://tgrcode.com/mm2'
+
+# Show DevTools
+debug: false
+
+# Courses to show per request
+tgrcode_api_course_count: 20
+
+# Show empty slots in local courses
+show_empty_slot: false
+
+# Load online courses on start
+load_online_on_start: true
+
+# Show thumbnails
+# Set to false to make it less likely to trigger rate limit
+show_thumbnails: false

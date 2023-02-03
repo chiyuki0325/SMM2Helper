@@ -4,3 +4,4 @@ pywebview
 requests
 pygobject
 pyclip
+pyyaml

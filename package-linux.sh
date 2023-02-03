@@ -18,17 +18,9 @@ msg "Preparing files..."
 if [ ! -d "$RELEASE_DIR" ]; then mkdir "$RELEASE_DIR"; fi
 
 msg "Copying files..."
-for file in "SMM2" "web" "config.py" "tgrcode_api.py" "widgets.py" "smm2helper.py" "README.md"; do
+for file in "SMM2" "web" "config.yml" "tgrcode_api.py" "widgets.py" "smm2helper.py" "README.md" "LICENSE"; do
     cp -r "$file" "${RELEASE_DIR}/${file}"
 done
-
-msg "Applying default settings..."
-sed -i '/SAVE_DIR/c\SAVE_DIR: str = "SMM2 save data directory path"' "${RELEASE_DIR}/config.py"
-sed -i '/DEBUG/c\DEBUG: bool = False' "${RELEASE_DIR}/config.py"
-sed -i '/TGRCODE_API_COURSE_NUMBER/c\TGRCODE_API_COURSE_NUMBER: int = 20' "${RELEASE_DIR}/config.py"
-sed -i '/SHOW_EMPTY_SLOT/c\SHOW_EMPTY_SLOT: bool = False' "${RELEASE_DIR}/config.py"
-sed -i '/LOAD_ONLINE_ON_START/c\LOAD_ONLINE_ON_START: bool = True' "${RELEASE_DIR}/config.py"
-sed -i '/SHOW_THUMBNAILS/c\SHOW_THUMBNAILS: bool = False' "${RELEASE_DIR}/config.py"
 
 rm -rf "${RELEASE_DIR}/SMM2/__pycache__"
 
@@ -37,7 +29,7 @@ cp smm2helper-linux.sh "${RELEASE_DIR}/smm2helper"
 
 msg "Creating final package..."
 pushd "$RELEASE_DIR"
-tar -czvf "../SMM2Helper-${VERSION}-linux.tar.gz" *
+tar -czvf "../SMM2Helper-${VERSION}-linux-standalone.tar.gz" *
 popd
 
 rm -rf "$RELEASE_DIR"

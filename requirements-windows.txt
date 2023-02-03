@@ -4,3 +4,4 @@ pywebview
 requests
 pyclip
 pythonnet
+pyyaml

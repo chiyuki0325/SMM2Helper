@@ -1,24 +1,12 @@
-# SMM2Helper Version
-VERSION: str = '1.3'
+import yaml
 
-# SMM2 user save data path
-SAVE_DIR: str = 'SMM2 save data directory path'
+_config = yaml.safe_load(open('config.yml', 'r', encoding='utf-8'))
 
-# SMM2 API host
-TGRCODE_API: str = 'https://tgrcode.com/mm2'
-
-# Show DevTools
-DEBUG: bool = False
-
-# Courses to show per request
-TGRCODE_API_COURSE_NUMBER: int = 20
-
-# Show empty slots in local courses
-SHOW_EMPTY_SLOT: bool = False
-
-# Load online courses on start
-LOAD_ONLINE_ON_START: bool = True
-
-# Show thumbnails
-# Set to False to make it less likely to trigger rate limit
-SHOW_THUMBNAILS: bool = False
+VERSION: str = '1.4'
+SAVE_DIR: str = _config['save_dir']
+TGRCODE_API: str = _config['tgrcode_api']
+DEBUG: bool = _config['debug']
+TGRCODE_API_COURSE_COUNT: int = _config['tgrcode_api_course_count']
+SHOW_EMPTY_SLOT: bool = _config['show_empty_slot']
+LOAD_ONLINE_ON_START: bool = _config['load_online_on_start']
+SHOW_THUMBNAILS: bool = _config['show_thumbnails']
