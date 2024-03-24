@@ -171,6 +171,8 @@ class Api:
         widgets.show_info_message(window, f'Downloading course {course_data_id} to slot #{slot_idx}, please wait ...')
         output_file = Path(save_dir / Path(f'course_data_{slot_idx.rjust(3, "0")}.bcd'))
         backup_file = Path(save_dir / Path(f'course_data_{slot_idx.rjust(3, "0")}.bcd.bak'))
+        if backup_file.exists():
+            backup_file.unlink()
         output_file.rename(backup_file)
         with output_file.open('wb') as file_handle:
             try:
