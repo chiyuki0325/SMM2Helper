@@ -6,7 +6,7 @@
 </div>
 A SMM2 Course World browser, frontend for <a href="https://github.com/TheGreatRambler/MariOver">TheGreatRambler's SMM2 API</a>, supports Windows and Linux.
 
-<img src="https://imgsrc.baidu.com/forum/pic/item/5243fbf2b21193136f1f8b7520380cd790238d93.jpg" alt="Screenshot: course list" width="33%;" /><img src="https://imgsrc.baidu.com/forum/pic/item/5243fbf2b21193136f1b8b7520380cd790238d9f.jpg" alt="Screenshot: course details" width="33%;" /><img src="https://imgsrc.baidu.com/forum/pic/item/c8177f3e6709c93d48a67a32da3df8dcd000549a.jpg" alt="Screenshot: maker details" width="33%;" />
+<img src="./images/5243fbf2b21193136f1f8b7520380cd790238d93.png" alt="Screenshot: course list" width="33%;" /><img src="./images/5243fbf2b21193136f1b8b7520380cd790238d9f.png" alt="Screenshot: course details" width="33%;" /><img src="./images/c8177f3e6709c93d48a67a32da3df8dcd000549a.png" alt="Screenshot: maker details" width="33%;" />
 
 ### Features
 
